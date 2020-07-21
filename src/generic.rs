@@ -9,15 +9,18 @@ pub trait Readable {}
 #[doc = ""]
 #[doc = " Registers marked with `Readable` can be also `modify`'ed."]
 pub trait Writable {}
+#[doc = " Raw register type (autoimplemented for `Reg` type)"]
+pub trait RawType {
+    #[doc = " Raw register type (`u8`, `u16`, `u32`, ...)."]
+    type Ux: Copy;
+}
 #[doc = " Reset value of the register."]
 #[doc = ""]
 #[doc = " This value is the initial value for the `write` method. It can also be directly written to the"]
 #[doc = " register by using the `reset` method."]
-pub trait ResetValue {
-    #[doc = " Raw register type (`u8`, `u16`, `u32`, ...)."]
-    type Type;
+pub trait ResetValue: RawType {
     #[doc = " Reset value of the register."]
-    fn reset_value() -> Self::Type;
+    fn reset_value() -> Self::Ux;
 }
 #[doc = " This structure provides volatile access to registers."]
 pub struct Reg<U, REG> {
@@ -64,9 +67,15 @@ where
         }
     }
 }
+impl<U, REG> RawType for Reg<U, REG>
+where
+    U: Copy,
+{
+    type Ux = U;
+}
 impl<U, REG> Reg<U, REG>
 where
-    Self: ResetValue<Type = U> + Writable,
+    Self: ResetValue + RawType<Ux = U> + Writable,
     U: Copy,
 {
     #[doc = " Writes the reset value to `Writable` register."]
@@ -79,7 +88,7 @@ where
 }
 impl<U, REG> Reg<U, REG>
 where
-    Self: ResetValue<Type = U> + Writable,
+    Self: ResetValue + RawType<Ux = U> + Writable,
     U: Copy,
 {
     #[doc = " Writes bits to a `Writable` register."]

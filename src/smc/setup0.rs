@@ -4,9 +4,8 @@ pub type R = crate::R<u32, super::SETUP0>;
 pub type W = crate::W<u32, super::SETUP0>;
 #[doc = "Register SETUP0 `reset()`'s with value 0x0101_0101"]
 impl crate::ResetValue for super::SETUP0 {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0x0101_0101
     }
 }

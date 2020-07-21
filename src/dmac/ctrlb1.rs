@@ -4,9 +4,8 @@ pub type R = crate::R<u32, super::CTRLB1>;
 pub type W = crate::W<u32, super::CTRLB1>;
 #[doc = "Register CTRLB1 `reset()`'s with value 0"]
 impl crate::ResetValue for super::CTRLB1 {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0
     }
 }
@@ -54,9 +53,7 @@ impl<'a> SRC_DSCR_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: SRC_DSCR_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "Source address is updated when the descriptor is fetched from the memory."]
     #[inline(always)]
@@ -129,9 +126,7 @@ impl<'a> DST_DSCR_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: DST_DSCR_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "Destination address is updated when the descriptor is fetched from the memory."]
     #[inline(always)]
@@ -222,9 +217,7 @@ impl<'a> FC_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: FC_A) -> &'a mut W {
-        {
-            self.bits(variant.into())
-        }
+        self.bits(variant.into())
     }
     #[doc = "Memory-to-Memory Transfer DMAC is flow controller"]
     #[inline(always)]

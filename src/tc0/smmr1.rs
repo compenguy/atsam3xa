@@ -4,9 +4,8 @@ pub type R = crate::R<u32, super::SMMR1>;
 pub type W = crate::W<u32, super::SMMR1>;
 #[doc = "Register SMMR1 `reset()`'s with value 0"]
 impl crate::ResetValue for super::SMMR1 {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0
     }
 }

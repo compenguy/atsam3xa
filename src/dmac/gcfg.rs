@@ -4,9 +4,8 @@ pub type R = crate::R<u32, super::GCFG>;
 pub type W = crate::W<u32, super::GCFG>;
 #[doc = "Register GCFG `reset()`'s with value 0x10"]
 impl crate::ResetValue for super::GCFG {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0x10
     }
 }
@@ -54,9 +53,7 @@ impl<'a> ARB_CFG_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: ARB_CFG_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "Fixed priority arbiter (see \"Basic Definitions\" )"]
     #[inline(always)]

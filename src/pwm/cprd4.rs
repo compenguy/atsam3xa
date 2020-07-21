@@ -4,9 +4,8 @@ pub type R = crate::R<u32, super::CPRD4>;
 pub type W = crate::W<u32, super::CPRD4>;
 #[doc = "Register CPRD4 `reset()`'s with value 0"]
 impl crate::ResetValue for super::CPRD4 {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0
     }
 }

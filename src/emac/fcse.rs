@@ -4,9 +4,8 @@ pub type R = crate::R<u32, super::FCSE>;
 pub type W = crate::W<u32, super::FCSE>;
 #[doc = "Register FCSE `reset()`'s with value 0"]
 impl crate::ResetValue for super::FCSE {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0
     }
 }

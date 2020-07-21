@@ -4,9 +4,8 @@ pub type R = crate::R<u32, super::PMC_USB>;
 pub type W = crate::W<u32, super::PMC_USB>;
 #[doc = "Register PMC_USB `reset()`'s with value 0"]
 impl crate::ResetValue for super::PMC_USB {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0
     }
 }

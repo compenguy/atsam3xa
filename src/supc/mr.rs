@@ -4,9 +4,8 @@ pub type R = crate::R<u32, super::MR>;
 pub type W = crate::W<u32, super::MR>;
 #[doc = "Register MR `reset()`'s with value 0x5a00"]
 impl crate::ResetValue for super::MR {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0x5a00
     }
 }
@@ -54,9 +53,7 @@ impl<'a> BODRSTEN_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: BODRSTEN_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "the core reset signal \"vddcore_nreset\" is not affected when a brownout detection occurs."]
     #[inline(always)]
@@ -129,9 +126,7 @@ impl<'a> BODDIS_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: BODDIS_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "the core brownout detector is enabled."]
     #[inline(always)]
@@ -204,9 +199,7 @@ impl<'a> VDDIORDY_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: VDDIORDY_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "VDDIO is removed (used before going to backup mode when backup batteries are used)"]
     #[inline(always)]
@@ -279,9 +272,7 @@ impl<'a> OSCBYPASS_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: OSCBYPASS_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "no effect. Clock selection depends on XTALSEL value."]
     #[inline(always)]

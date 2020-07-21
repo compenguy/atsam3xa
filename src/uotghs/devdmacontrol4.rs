@@ -4,9 +4,8 @@ pub type R = crate::R<u32, super::DEVDMACONTROL4>;
 pub type W = crate::W<u32, super::DEVDMACONTROL4>;
 #[doc = "Register DEVDMACONTROL4 `reset()`'s with value 0"]
 impl crate::ResetValue for super::DEVDMACONTROL4 {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0
     }
 }

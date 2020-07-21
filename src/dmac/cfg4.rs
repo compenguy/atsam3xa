@@ -4,9 +4,8 @@ pub type R = crate::R<u32, super::CFG4>;
 pub type W = crate::W<u32, super::CFG4>;
 #[doc = "Register CFG4 `reset()`'s with value 0x0100_0000"]
 impl crate::ResetValue for super::CFG4 {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0x0100_0000
     }
 }
@@ -82,9 +81,7 @@ impl<'a> SRC_H2SEL_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: SRC_H2SEL_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "Software handshaking interface is used to trigger a transfer request."]
     #[inline(always)]
@@ -157,9 +154,7 @@ impl<'a> DST_H2SEL_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: DST_H2SEL_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "Software handshaking interface is used to trigger a transfer request."]
     #[inline(always)]
@@ -232,9 +227,7 @@ impl<'a> SOD_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: SOD_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "STOP ON DONE disabled, the descriptor fetch operation ignores DONE Field of CTRLA register."]
     #[inline(always)]
@@ -307,9 +300,7 @@ impl<'a> LOCK_IF_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: LOCK_IF_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "Interface Lock capability is disabled"]
     #[inline(always)]
@@ -376,9 +367,7 @@ impl<'a> LOCK_B_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: LOCK_B_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "AHB Bus Locking capability is disabled."]
     #[inline(always)]
@@ -446,9 +435,7 @@ impl<'a> LOCK_IF_L_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: LOCK_IF_L_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "The Master Interface Arbiter is locked by the channel x for a chunk transfer."]
     #[inline(always)]

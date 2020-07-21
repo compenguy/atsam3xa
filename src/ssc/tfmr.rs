@@ -4,9 +4,8 @@ pub type R = crate::R<u32, super::TFMR>;
 pub type W = crate::W<u32, super::TFMR>;
 #[doc = "Register TFMR `reset()`'s with value 0"]
 impl crate::ResetValue for super::TFMR {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0
     }
 }
@@ -286,9 +285,7 @@ impl<'a> FSEDGE_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: FSEDGE_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "Positive Edge Detection"]
     #[inline(always)]

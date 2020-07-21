@@ -4,9 +4,8 @@ pub type R = crate::R<u32, super::BR>;
 pub type W = crate::W<u32, super::BR>;
 #[doc = "Register BR `reset()`'s with value 0"]
 impl crate::ResetValue for super::BR {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0
     }
 }
@@ -124,9 +123,7 @@ impl<'a> SMP_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: SMP_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "The incoming bit stream is sampled once at sample point."]
     #[inline(always)]

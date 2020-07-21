@@ -4,9 +4,8 @@ pub type R = crate::R<u32, super::WUIR>;
 pub type W = crate::W<u32, super::WUIR>;
 #[doc = "Register WUIR `reset()`'s with value 0"]
 impl crate::ResetValue for super::WUIR {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0
     }
 }
@@ -54,9 +53,7 @@ impl<'a> WKUPEN0_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: WKUPEN0_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "the corresponding wake-up input has no wake-up effect."]
     #[inline(always)]
@@ -129,9 +126,7 @@ impl<'a> WKUPEN1_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: WKUPEN1_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "the corresponding wake-up input has no wake-up effect."]
     #[inline(always)]
@@ -204,9 +199,7 @@ impl<'a> WKUPEN2_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: WKUPEN2_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "the corresponding wake-up input has no wake-up effect."]
     #[inline(always)]
@@ -279,9 +272,7 @@ impl<'a> WKUPEN3_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: WKUPEN3_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "the corresponding wake-up input has no wake-up effect."]
     #[inline(always)]
@@ -354,9 +345,7 @@ impl<'a> WKUPEN4_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: WKUPEN4_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "the corresponding wake-up input has no wake-up effect."]
     #[inline(always)]
@@ -429,9 +418,7 @@ impl<'a> WKUPEN5_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: WKUPEN5_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "the corresponding wake-up input has no wake-up effect."]
     #[inline(always)]
@@ -504,9 +491,7 @@ impl<'a> WKUPEN6_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: WKUPEN6_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "the corresponding wake-up input has no wake-up effect."]
     #[inline(always)]
@@ -579,9 +564,7 @@ impl<'a> WKUPEN7_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: WKUPEN7_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "the corresponding wake-up input has no wake-up effect."]
     #[inline(always)]
@@ -654,9 +637,7 @@ impl<'a> WKUPEN8_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: WKUPEN8_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "the corresponding wake-up input has no wake-up effect."]
     #[inline(always)]
@@ -729,9 +710,7 @@ impl<'a> WKUPEN9_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: WKUPEN9_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "the corresponding wake-up input has no wake-up effect."]
     #[inline(always)]
@@ -804,9 +783,7 @@ impl<'a> WKUPEN10_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: WKUPEN10_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "the corresponding wake-up input has no wake-up effect."]
     #[inline(always)]
@@ -879,9 +856,7 @@ impl<'a> WKUPEN11_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: WKUPEN11_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "the corresponding wake-up input has no wake-up effect."]
     #[inline(always)]
@@ -954,9 +929,7 @@ impl<'a> WKUPEN12_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: WKUPEN12_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "the corresponding wake-up input has no wake-up effect."]
     #[inline(always)]
@@ -1029,9 +1002,7 @@ impl<'a> WKUPEN13_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: WKUPEN13_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "the corresponding wake-up input has no wake-up effect."]
     #[inline(always)]
@@ -1104,9 +1075,7 @@ impl<'a> WKUPEN14_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: WKUPEN14_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "the corresponding wake-up input has no wake-up effect."]
     #[inline(always)]
@@ -1179,9 +1148,7 @@ impl<'a> WKUPEN15_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: WKUPEN15_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "the corresponding wake-up input has no wake-up effect."]
     #[inline(always)]
@@ -1254,9 +1221,7 @@ impl<'a> WKUPT0_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: WKUPT0_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "a high to low level transition for a period defined by WKUPDBC on the corresponding wake-up input forces the wake-up of the core power supply."]
     #[inline(always)]
@@ -1329,9 +1294,7 @@ impl<'a> WKUPT1_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: WKUPT1_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "a high to low level transition for a period defined by WKUPDBC on the corresponding wake-up input forces the wake-up of the core power supply."]
     #[inline(always)]
@@ -1404,9 +1367,7 @@ impl<'a> WKUPT2_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: WKUPT2_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "a high to low level transition for a period defined by WKUPDBC on the corresponding wake-up input forces the wake-up of the core power supply."]
     #[inline(always)]
@@ -1479,9 +1440,7 @@ impl<'a> WKUPT3_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: WKUPT3_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "a high to low level transition for a period defined by WKUPDBC on the corresponding wake-up input forces the wake-up of the core power supply."]
     #[inline(always)]
@@ -1554,9 +1513,7 @@ impl<'a> WKUPT4_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: WKUPT4_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "a high to low level transition for a period defined by WKUPDBC on the corresponding wake-up input forces the wake-up of the core power supply."]
     #[inline(always)]
@@ -1629,9 +1586,7 @@ impl<'a> WKUPT5_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: WKUPT5_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "a high to low level transition for a period defined by WKUPDBC on the corresponding wake-up input forces the wake-up of the core power supply."]
     #[inline(always)]
@@ -1704,9 +1659,7 @@ impl<'a> WKUPT6_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: WKUPT6_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "a high to low level transition for a period defined by WKUPDBC on the corresponding wake-up input forces the wake-up of the core power supply."]
     #[inline(always)]
@@ -1779,9 +1732,7 @@ impl<'a> WKUPT7_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: WKUPT7_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "a high to low level transition for a period defined by WKUPDBC on the corresponding wake-up input forces the wake-up of the core power supply."]
     #[inline(always)]
@@ -1854,9 +1805,7 @@ impl<'a> WKUPT8_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: WKUPT8_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "a high to low level transition for a period defined by WKUPDBC on the corresponding wake-up input forces the wake-up of the core power supply."]
     #[inline(always)]
@@ -1929,9 +1878,7 @@ impl<'a> WKUPT9_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: WKUPT9_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "a high to low level transition for a period defined by WKUPDBC on the corresponding wake-up input forces the wake-up of the core power supply."]
     #[inline(always)]
@@ -2004,9 +1951,7 @@ impl<'a> WKUPT10_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: WKUPT10_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "a high to low level transition for a period defined by WKUPDBC on the corresponding wake-up input forces the wake-up of the core power supply."]
     #[inline(always)]
@@ -2079,9 +2024,7 @@ impl<'a> WKUPT11_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: WKUPT11_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "a high to low level transition for a period defined by WKUPDBC on the corresponding wake-up input forces the wake-up of the core power supply."]
     #[inline(always)]
@@ -2154,9 +2097,7 @@ impl<'a> WKUPT12_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: WKUPT12_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "a high to low level transition for a period defined by WKUPDBC on the corresponding wake-up input forces the wake-up of the core power supply."]
     #[inline(always)]
@@ -2229,9 +2170,7 @@ impl<'a> WKUPT13_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: WKUPT13_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "a high to low level transition for a period defined by WKUPDBC on the corresponding wake-up input forces the wake-up of the core power supply."]
     #[inline(always)]
@@ -2304,9 +2243,7 @@ impl<'a> WKUPT14_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: WKUPT14_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "a high to low level transition for a period defined by WKUPDBC on the corresponding wake-up input forces the wake-up of the core power supply."]
     #[inline(always)]
@@ -2379,9 +2316,7 @@ impl<'a> WKUPT15_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: WKUPT15_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "a high to low level transition for a period defined by WKUPDBC on the corresponding wake-up input forces the wake-up of the core power supply."]
     #[inline(always)]

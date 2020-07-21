@@ -4,9 +4,8 @@ pub type R = crate::R<u32, super::OCMS>;
 pub type W = crate::W<u32, super::OCMS>;
 #[doc = "Register OCMS `reset()`'s with value 0"]
 impl crate::ResetValue for super::OCMS {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0
     }
 }

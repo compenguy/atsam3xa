@@ -4,9 +4,8 @@ pub type R = crate::R<u32, super::MATRIX_PRAS7>;
 pub type W = crate::W<u32, super::MATRIX_PRAS7>;
 #[doc = "Register MATRIX_PRAS7 `reset()`'s with value 0"]
 impl crate::ResetValue for super::MATRIX_PRAS7 {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0
     }
 }

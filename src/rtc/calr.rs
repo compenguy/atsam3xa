@@ -4,9 +4,8 @@ pub type R = crate::R<u32, super::CALR>;
 pub type W = crate::W<u32, super::CALR>;
 #[doc = "Register CALR `reset()`'s with value 0x0121_0720"]
 impl crate::ResetValue for super::CALR {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0x0121_0720
     }
 }

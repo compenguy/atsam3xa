@@ -4,9 +4,8 @@ pub type R = crate::R<u32, super::FIDI>;
 pub type W = crate::W<u32, super::FIDI>;
 #[doc = "Register FIDI `reset()`'s with value 0x0174"]
 impl crate::ResetValue for super::FIDI {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0x0174
     }
 }

@@ -4,9 +4,8 @@ pub type R = crate::R<u32, super::MODE5>;
 pub type W = crate::W<u32, super::MODE5>;
 #[doc = "Register MODE5 `reset()`'s with value 0x1000_0003"]
 impl crate::ResetValue for super::MODE5 {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0x1000_0003
     }
 }
@@ -54,9 +53,7 @@ impl<'a> READ_MODE_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: READ_MODE_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "The Read operation is controlled by the NCS signal."]
     #[inline(always)]
@@ -129,9 +126,7 @@ impl<'a> WRITE_MODE_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: WRITE_MODE_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "The Write operation is controller by the NCS signal."]
     #[inline(always)]
@@ -307,9 +302,7 @@ impl<'a> DBW_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: DBW_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "8-bit bus"]
     #[inline(always)]

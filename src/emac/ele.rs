@@ -4,9 +4,8 @@ pub type R = crate::R<u32, super::ELE>;
 pub type W = crate::W<u32, super::ELE>;
 #[doc = "Register ELE `reset()`'s with value 0"]
 impl crate::ResetValue for super::ELE {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0
     }
 }

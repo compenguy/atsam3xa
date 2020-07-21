@@ -4,9 +4,8 @@ pub type R = crate::R<u32, super::MR>;
 pub type W = crate::W<u32, super::MR>;
 #[doc = "Register MR `reset()`'s with value 0"]
 impl crate::ResetValue for super::MR {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0
     }
 }
@@ -54,9 +53,7 @@ impl<'a> TRGEN_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: TRGEN_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "External trigger mode disabled. DACC in free running mode."]
     #[inline(always)]
@@ -143,9 +140,7 @@ impl<'a> WORD_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: WORD_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "Half-Word transfer"]
     #[inline(always)]
@@ -346,9 +341,7 @@ impl<'a> TAG_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: TAG_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "Tag selection mode disabled. Using USER_SEL to select the channel for the conversion."]
     #[inline(always)]
@@ -421,9 +414,7 @@ impl<'a> MAXS_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: MAXS_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "Normal Mode"]
     #[inline(always)]

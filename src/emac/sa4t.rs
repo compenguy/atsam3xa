@@ -4,9 +4,8 @@ pub type R = crate::R<u32, super::SA4T>;
 pub type W = crate::W<u32, super::SA4T>;
 #[doc = "Register SA4T `reset()`'s with value 0"]
 impl crate::ResetValue for super::SA4T {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0
     }
 }

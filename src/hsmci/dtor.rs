@@ -4,9 +4,8 @@ pub type R = crate::R<u32, super::DTOR>;
 pub type W = crate::W<u32, super::DTOR>;
 #[doc = "Register DTOR `reset()`'s with value 0"]
 impl crate::ResetValue for super::DTOR {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0
     }
 }
@@ -118,9 +117,7 @@ impl<'a> DTOMUL_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: DTOMUL_A) -> &'a mut W {
-        {
-            self.bits(variant.into())
-        }
+        self.bits(variant.into())
     }
     #[doc = "DTOCYC"]
     #[inline(always)]

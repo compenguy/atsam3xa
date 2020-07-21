@@ -4,9 +4,8 @@ pub type R = crate::R<u32, super::PMC_MCKR>;
 pub type W = crate::W<u32, super::PMC_MCKR>;
 #[doc = "Register PMC_MCKR `reset()`'s with value 0x01"]
 impl crate::ResetValue for super::PMC_MCKR {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0x01
     }
 }
@@ -72,9 +71,7 @@ impl<'a> CSS_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: CSS_A) -> &'a mut W {
-        {
-            self.bits(variant.into())
-        }
+        self.bits(variant.into())
     }
     #[doc = "Slow Clock is selected"]
     #[inline(always)]
@@ -197,9 +194,7 @@ impl<'a> PRES_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: PRES_A) -> &'a mut W {
-        {
-            self.bits(variant.into())
-        }
+        self.bits(variant.into())
     }
     #[doc = "Selected clock"]
     #[inline(always)]

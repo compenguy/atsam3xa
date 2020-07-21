@@ -4,9 +4,8 @@ pub type R = crate::R<u32, super::MAN>;
 pub type W = crate::W<u32, super::MAN>;
 #[doc = "Register MAN `reset()`'s with value 0xb001_1004"]
 impl crate::ResetValue for super::MAN {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0xb001_1004
     }
 }
@@ -86,9 +85,7 @@ impl<'a> TX_PP_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: TX_PP_A) -> &'a mut W {
-        {
-            self.bits(variant.into())
-        }
+        self.bits(variant.into())
     }
     #[doc = "The preamble is composed of '1's"]
     #[inline(always)]
@@ -217,9 +214,7 @@ impl<'a> RX_PP_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: RX_PP_A) -> &'a mut W {
-        {
-            self.bits(variant.into())
-        }
+        self.bits(variant.into())
     }
     #[doc = "The preamble is composed of '1's"]
     #[inline(always)]

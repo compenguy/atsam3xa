@@ -4,9 +4,8 @@ pub type R = crate::R<u32, super::MATRIX_WPMR>;
 pub type W = crate::W<u32, super::MATRIX_WPMR>;
 #[doc = "Register MATRIX_WPMR `reset()`'s with value 0"]
 impl crate::ResetValue for super::MATRIX_WPMR {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0
     }
 }

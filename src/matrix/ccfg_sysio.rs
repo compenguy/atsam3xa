@@ -4,9 +4,8 @@ pub type R = crate::R<u32, super::CCFG_SYSIO>;
 pub type W = crate::W<u32, super::CCFG_SYSIO>;
 #[doc = "Register CCFG_SYSIO `reset()`'s with value 0"]
 impl crate::ResetValue for super::CCFG_SYSIO {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0
     }
 }

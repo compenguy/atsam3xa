@@ -4,9 +4,8 @@ pub type R = crate::R<u32, super::DMA>;
 pub type W = crate::W<u32, super::DMA>;
 #[doc = "Register DMA `reset()`'s with value 0"]
 impl crate::ResetValue for super::DMA {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0
     }
 }
@@ -68,9 +67,7 @@ impl<'a> CHKSIZE_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: CHKSIZE_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "1 data available"]
     #[inline(always)]

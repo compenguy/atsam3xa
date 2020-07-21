@@ -4,9 +4,8 @@ pub type R = crate::R<u32, super::CMR0>;
 pub type W = crate::W<u32, super::CMR0>;
 #[doc = "Register CMR0 `reset()`'s with value 0"]
 impl crate::ResetValue for super::CMR0 {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0
     }
 }
@@ -104,9 +103,7 @@ impl<'a> TCCLKS_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: TCCLKS_A) -> &'a mut W {
-        {
-            self.bits(variant.into())
-        }
+        self.bits(variant.into())
     }
     #[doc = "Clock selected: TCLK1"]
     #[inline(always)]
@@ -241,9 +238,7 @@ impl<'a> BURST_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: BURST_A) -> &'a mut W {
-        {
-            self.bits(variant.into())
-        }
+        self.bits(variant.into())
     }
     #[doc = "The clock is not gated by an external signal."]
     #[inline(always)]
@@ -382,9 +377,7 @@ impl<'a> ETRGEDG_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: ETRGEDG_A) -> &'a mut W {
-        {
-            self.bits(variant.into())
-        }
+        self.bits(variant.into())
     }
     #[doc = "The clock is not gated by an external signal."]
     #[inline(always)]
@@ -547,9 +540,7 @@ impl<'a> LDRA_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: LDRA_A) -> &'a mut W {
-        {
-            self.bits(variant.into())
-        }
+        self.bits(variant.into())
     }
     #[doc = "None"]
     #[inline(always)]
@@ -640,9 +631,7 @@ impl<'a> LDRB_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: LDRB_A) -> &'a mut W {
-        {
-            self.bits(variant.into())
-        }
+        self.bits(variant.into())
     }
     #[doc = "None"]
     #[inline(always)]

@@ -4,9 +4,8 @@ pub type R = crate::R<u32, super::NCFGR>;
 pub type W = crate::W<u32, super::NCFGR>;
 #[doc = "Register NCFGR `reset()`'s with value 0x0800"]
 impl crate::ResetValue for super::NCFGR {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0x0800
     }
 }
@@ -264,9 +263,7 @@ impl<'a> CLK_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: CLK_A) -> &'a mut W {
-        {
-            self.bits(variant.into())
-        }
+        self.bits(variant.into())
     }
     #[doc = "MCK divided by 8 (MCK up to 20 MHz)."]
     #[inline(always)]
@@ -405,9 +402,7 @@ impl<'a> RBOF_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: RBOF_A) -> &'a mut W {
-        {
-            self.bits(variant.into())
-        }
+        self.bits(variant.into())
     }
     #[doc = "No offset from start of receive buffer."]
     #[inline(always)]

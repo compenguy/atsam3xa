@@ -4,9 +4,8 @@ pub type R = crate::R<u32, super::CTRL>;
 pub type W = crate::W<u32, super::CTRL>;
 #[doc = "Register CTRL `reset()`'s with value 0x0300_4000"]
 impl crate::ResetValue for super::CTRL {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0x0300_4000
     }
 }
@@ -490,9 +489,7 @@ impl<'a> UIDE_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: UIDE_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "The USB mode (device/host) is selected from the UIMOD bit."]
     #[inline(always)]
@@ -565,9 +562,7 @@ impl<'a> UIMOD_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: UIMOD_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "The module is in USB host mode."]
     #[inline(always)]

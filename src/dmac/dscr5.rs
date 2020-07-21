@@ -4,9 +4,8 @@ pub type R = crate::R<u32, super::DSCR5>;
 pub type W = crate::W<u32, super::DSCR5>;
 #[doc = "Register DSCR5 `reset()`'s with value 0"]
 impl crate::ResetValue for super::DSCR5 {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0
     }
 }

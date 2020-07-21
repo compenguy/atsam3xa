@@ -4,9 +4,8 @@ pub type R = crate::R<u32, super::SMMR>;
 pub type W = crate::W<u32, super::SMMR>;
 #[doc = "Register SMMR `reset()`'s with value 0"]
 impl crate::ResetValue for super::SMMR {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0
     }
 }
@@ -173,9 +172,7 @@ impl<'a> SMRSTEN_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: SMRSTEN_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "the core reset signal \"vddcore_nreset\" is not affected when a supply monitor detection occurs."]
     #[inline(always)]
@@ -248,9 +245,7 @@ impl<'a> SMIEN_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: SMIEN_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "the SUPC interrupt signal is not affected when a supply monitor detection occurs."]
     #[inline(always)]

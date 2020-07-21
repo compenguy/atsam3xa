@@ -4,9 +4,8 @@ pub type R = crate::R<u32, super::CMR1_WAVE_EQ_1>;
 pub type W = crate::W<u32, super::CMR1_WAVE_EQ_1>;
 #[doc = "Register CMR1_WAVE_EQ_1 `reset()`'s with value 0"]
 impl crate::ResetValue for super::CMR1_WAVE_EQ_1 {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0
     }
 }
@@ -104,9 +103,7 @@ impl<'a> TCCLKS_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: TCCLKS_A) -> &'a mut W {
-        {
-            self.bits(variant.into())
-        }
+        self.bits(variant.into())
     }
     #[doc = "Clock selected: TCLK1"]
     #[inline(always)]
@@ -241,9 +238,7 @@ impl<'a> BURST_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: BURST_A) -> &'a mut W {
-        {
-            self.bits(variant.into())
-        }
+        self.bits(variant.into())
     }
     #[doc = "The clock is not gated by an external signal."]
     #[inline(always)]
@@ -382,9 +377,7 @@ impl<'a> EEVTEDG_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: EEVTEDG_A) -> &'a mut W {
-        {
-            self.bits(variant.into())
-        }
+        self.bits(variant.into())
     }
     #[doc = "None"]
     #[inline(always)]
@@ -475,9 +468,7 @@ impl<'a> EEVT_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: EEVT_A) -> &'a mut W {
-        {
-            self.bits(variant.into())
-        }
+        self.bits(variant.into())
     }
     #[doc = "TIOB"]
     #[inline(always)]
@@ -592,9 +583,7 @@ impl<'a> WAVSEL_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: WAVSEL_A) -> &'a mut W {
-        {
-            self.bits(variant.into())
-        }
+        self.bits(variant.into())
     }
     #[doc = "UP mode without automatic trigger on RC Compare"]
     #[inline(always)]
@@ -709,9 +698,7 @@ impl<'a> ACPA_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: ACPA_A) -> &'a mut W {
-        {
-            self.bits(variant.into())
-        }
+        self.bits(variant.into())
     }
     #[doc = "None"]
     #[inline(always)]
@@ -802,9 +789,7 @@ impl<'a> ACPC_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: ACPC_A) -> &'a mut W {
-        {
-            self.bits(variant.into())
-        }
+        self.bits(variant.into())
     }
     #[doc = "None"]
     #[inline(always)]
@@ -895,9 +880,7 @@ impl<'a> AEEVT_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: AEEVT_A) -> &'a mut W {
-        {
-            self.bits(variant.into())
-        }
+        self.bits(variant.into())
     }
     #[doc = "None"]
     #[inline(always)]
@@ -988,9 +971,7 @@ impl<'a> ASWTRG_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: ASWTRG_A) -> &'a mut W {
-        {
-            self.bits(variant.into())
-        }
+        self.bits(variant.into())
     }
     #[doc = "None"]
     #[inline(always)]
@@ -1081,9 +1062,7 @@ impl<'a> BCPB_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: BCPB_A) -> &'a mut W {
-        {
-            self.bits(variant.into())
-        }
+        self.bits(variant.into())
     }
     #[doc = "None"]
     #[inline(always)]
@@ -1174,9 +1153,7 @@ impl<'a> BCPC_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: BCPC_A) -> &'a mut W {
-        {
-            self.bits(variant.into())
-        }
+        self.bits(variant.into())
     }
     #[doc = "None"]
     #[inline(always)]
@@ -1267,9 +1244,7 @@ impl<'a> BEEVT_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: BEEVT_A) -> &'a mut W {
-        {
-            self.bits(variant.into())
-        }
+        self.bits(variant.into())
     }
     #[doc = "None"]
     #[inline(always)]
@@ -1360,9 +1335,7 @@ impl<'a> BSWTRG_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: BSWTRG_A) -> &'a mut W {
-        {
-            self.bits(variant.into())
-        }
+        self.bits(variant.into())
     }
     #[doc = "None"]
     #[inline(always)]

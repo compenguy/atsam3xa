@@ -39,9 +39,7 @@ impl<'a> RSPTYP_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: RSPTYP_AW) -> &'a mut W {
-        {
-            self.bits(variant.into())
-        }
+        self.bits(variant.into())
     }
     #[doc = "No response"]
     #[inline(always)]
@@ -105,9 +103,7 @@ impl<'a> SPCMD_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: SPCMD_AW) -> &'a mut W {
-        {
-            self.bits(variant.into())
-        }
+        self.bits(variant.into())
     }
     #[doc = "Not a special CMD."]
     #[inline(always)]
@@ -178,9 +174,7 @@ impl<'a> OPDCMD_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: OPDCMD_AW) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "Push pull command."]
     #[inline(always)]
@@ -231,9 +225,7 @@ impl<'a> MAXLAT_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: MAXLAT_AW) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "5-cycle max latency."]
     #[inline(always)]
@@ -333,9 +325,7 @@ impl<'a> TRDIR_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: TRDIR_AW) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "Write."]
     #[inline(always)]
@@ -498,9 +488,7 @@ impl<'a> ATACS_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: ATACS_AW) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "Normal operation mode."]
     #[inline(always)]

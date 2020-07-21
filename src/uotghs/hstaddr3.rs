@@ -4,9 +4,8 @@ pub type R = crate::R<u32, super::HSTADDR3>;
 pub type W = crate::W<u32, super::HSTADDR3>;
 #[doc = "Register HSTADDR3 `reset()`'s with value 0"]
 impl crate::ResetValue for super::HSTADDR3 {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0
     }
 }

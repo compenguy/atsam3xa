@@ -2,9 +2,8 @@
 pub type W = crate::W<u32, super::KEY1>;
 #[doc = "Register KEY1 `reset()`'s with value 0"]
 impl crate::ResetValue for super::KEY1 {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0
     }
 }

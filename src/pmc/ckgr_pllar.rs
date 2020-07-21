@@ -4,9 +4,8 @@ pub type R = crate::R<u32, super::CKGR_PLLAR>;
 pub type W = crate::W<u32, super::CKGR_PLLAR>;
 #[doc = "Register CKGR_PLLAR `reset()`'s with value 0x3f00"]
 impl crate::ResetValue for super::CKGR_PLLAR {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0x3f00
     }
 }

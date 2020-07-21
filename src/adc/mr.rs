@@ -4,9 +4,8 @@ pub type R = crate::R<u32, super::MR>;
 pub type W = crate::W<u32, super::MR>;
 #[doc = "Register MR `reset()`'s with value 0"]
 impl crate::ResetValue for super::MR {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0
     }
 }
@@ -54,9 +53,7 @@ impl<'a> TRGEN_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: TRGEN_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "Hardware triggers are disabled. Starting a conversion is only possible by software."]
     #[inline(always)]
@@ -247,9 +244,7 @@ impl<'a> SLEEP_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: SLEEP_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "Normal Mode: The ADC Core and reference voltage circuitry are kept ON between conversions"]
     #[inline(always)]
@@ -322,9 +317,7 @@ impl<'a> FWUP_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: FWUP_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "If SLEEP is 1 then both ADC Core and reference voltage circuitry are OFF between conversions"]
     #[inline(always)]
@@ -397,9 +390,7 @@ impl<'a> FREERUN_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: FREERUN_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "Normal Mode"]
     #[inline(always)]
@@ -600,9 +591,7 @@ impl<'a> STARTUP_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: STARTUP_A) -> &'a mut W {
-        {
-            self.bits(variant.into())
-        }
+        self.bits(variant.into())
     }
     #[doc = "0 periods of ADCClock"]
     #[inline(always)]
@@ -753,9 +742,7 @@ impl<'a> SETTLING_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: SETTLING_A) -> &'a mut W {
-        {
-            self.bits(variant.into())
-        }
+        self.bits(variant.into())
     }
     #[doc = "3 periods of ADCClock"]
     #[inline(always)]
@@ -828,9 +815,7 @@ impl<'a> ANACH_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: ANACH_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "No analog change on channel switching: DIFF0, GAIN0 and OFF0 are used for all channels"]
     #[inline(always)]
@@ -931,9 +916,7 @@ impl<'a> USEQ_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: USEQ_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "Normal Mode: The controller converts channels in a simple numeric order depending only on the channel index."]
     #[inline(always)]

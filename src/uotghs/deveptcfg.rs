@@ -199,9 +199,7 @@ impl<'a> EPSIZE_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: EPSIZE_A) -> &'a mut W {
-        {
-            self.bits(variant.into())
-        }
+        self.bits(variant.into())
     }
     #[doc = "8 bytes"]
     #[inline(always)]
@@ -294,9 +292,7 @@ impl<'a> EPDIR_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: EPDIR_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "The endpoint direction is OUT."]
     #[inline(always)]
@@ -411,9 +407,7 @@ impl<'a> EPTYPE_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: EPTYPE_A) -> &'a mut W {
-        {
-            self.bits(variant.into())
-        }
+        self.bits(variant.into())
     }
     #[doc = "Control"]
     #[inline(always)]
@@ -504,9 +498,7 @@ impl<'a> NBTRANS_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: NBTRANS_A) -> &'a mut W {
-        {
-            self.bits(variant.into())
-        }
+        self.bits(variant.into())
     }
     #[doc = "reserved to endpoint that does not have the high-bandwidth isochronous capability."]
     #[inline(always)]

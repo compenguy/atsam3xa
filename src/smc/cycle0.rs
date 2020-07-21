@@ -4,9 +4,8 @@ pub type R = crate::R<u32, super::CYCLE0>;
 pub type W = crate::W<u32, super::CYCLE0>;
 #[doc = "Register CYCLE0 `reset()`'s with value 0x0003_0003"]
 impl crate::ResetValue for super::CYCLE0 {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0x0003_0003
     }
 }

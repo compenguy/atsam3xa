@@ -4,9 +4,8 @@ pub type R = crate::R<u32, super::HSTCTRL>;
 pub type W = crate::W<u32, super::HSTCTRL>;
 #[doc = "Register HSTCTRL `reset()`'s with value 0"]
 impl crate::ResetValue for super::HSTCTRL {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0
     }
 }
@@ -144,9 +143,7 @@ impl<'a> SPDCONF_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: SPDCONF_A) -> &'a mut W {
-        {
-            self.bits(variant.into())
-        }
+        self.bits(variant.into())
     }
     #[doc = "The host starts in full-speed mode and performs a high-speed reset to switch to the high-speed mode if the downstream peripheral is high-speed capable."]
     #[inline(always)]

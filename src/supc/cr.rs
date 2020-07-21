@@ -22,9 +22,7 @@ impl<'a> VROFF_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: VROFF_AW) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "no effect."]
     #[inline(always)]
@@ -75,9 +73,7 @@ impl<'a> XTALSEL_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: XTALSEL_AW) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "no effect."]
     #[inline(always)]

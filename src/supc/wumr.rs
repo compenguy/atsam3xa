@@ -4,9 +4,8 @@ pub type R = crate::R<u32, super::WUMR>;
 pub type W = crate::W<u32, super::WUMR>;
 #[doc = "Register WUMR `reset()`'s with value 0"]
 impl crate::ResetValue for super::WUMR {
-    type Type = u32;
     #[inline(always)]
-    fn reset_value() -> Self::Type {
+    fn reset_value() -> Self::Ux {
         0
     }
 }
@@ -54,9 +53,7 @@ impl<'a> FWUPEN_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: FWUPEN_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "the Force Wake-up pin has no wake-up effect."]
     #[inline(always)]
@@ -129,9 +126,7 @@ impl<'a> SMEN_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: SMEN_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "the supply monitor detection has no wake-up effect."]
     #[inline(always)]
@@ -204,9 +199,7 @@ impl<'a> RTTEN_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: RTTEN_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "the RTT alarm signal has no wake-up effect."]
     #[inline(always)]
@@ -279,9 +272,7 @@ impl<'a> RTCEN_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: RTCEN_A) -> &'a mut W {
-        {
-            self.bit(variant.into())
-        }
+        self.bit(variant.into())
     }
     #[doc = "the RTC alarm signal has no wake-up effect."]
     #[inline(always)]

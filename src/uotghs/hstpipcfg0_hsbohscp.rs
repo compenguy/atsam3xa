@@ -199,9 +199,7 @@ impl<'a> PSIZE_W<'a> {
     #[doc = r"Writes `variant` to the field"]
     #[inline(always)]
     pub fn variant(self, variant: PSIZE_A) -> &'a mut W {
-        {
-            self.bits(variant.into())
-        }
+        self.bits(variant.into())
     }
     #[doc = "8 bytes"]
     #[inline(always)]
