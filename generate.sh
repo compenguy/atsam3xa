@@ -39,11 +39,3 @@ cargo fmt
 rustfmt build.rs
 echo ""
 
-# Patch SVD?
-#[ -f ATSAM3X8E.svd.patched ] && rm -f ATSAM3X8E.svd.patched
-#svd patch ATSAM3X8E.svd
-
-#rm -rf src/
-#svd2rust --nightly -i ATSAME3X8E.svd.patched
-#form -i lib.rs -o src/
-#rm lib.rs
