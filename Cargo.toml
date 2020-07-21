@@ -1,21 +1,22 @@
 [package]
+edition = "2018"
 name = "atsam3x8e"
+description = "Register mappings for the Atmel sam3x8e family of ARM microcontrollers"
 version = "0.1.0"
 authors = ["Will Page <compenguy@gmail.com>"]
-description = "Register mappings for the Atmel sam3x8e family of ARM microcontrollers"
 license = "MIT OR Apache-2.0"
+keywords = ["no-std", "arm", "cortex-m", "sam3x", "sam3x8e", "svd2rust"]
 categories = ["embedded", "hardware-support", "no-std"]
-keywords = ["arm", "cortex-m", "svd2rust"]
-edition = "2018"
+readme = "README.md"
 
 [dependencies]
-bare-metal = "0.2"
-cortex-m = "0.5"
-vcell = "0.1"
+bare-metal = "~0.2"
+cortex-m = "~0.6"
+vcell = "~0.1"
 
 [dependencies.cortex-m-rt]
 optional = true
-version = "0.6"
+version = "~0.6.12"
 
 [features]
 rt = ["cortex-m-rt/device"]
