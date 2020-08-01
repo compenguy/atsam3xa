@@ -8,22 +8,27 @@ for the [ATSAM3X/A family of Atmel MCUs](https://ww1.microchip.com/downloads/en/
 
 Target support:
 
-* atsam3a4c - *in work* *untested*
-* atsam3a8c - *in work* *untested*
-* atsam3x4c - *in work* *untested*
-* atsam3x4e - *in work* *untested*
-* atsam3x8c - *in work* *untested*
-* atsam3x8e - *in work*
-* atsam3x8h - *in work* *untested*
+| target | progress |
+| ------ | -------- |
+| atsam3a4c | untested |
+| atsam3a4c | untested |
+| atsam3a8c | untested |
+| atsam3x4c | untested |
+| atsam3x4e | untested |
+| atsam3x8c | untested |
+| atsam3x8e | simple applications running on Arduino Due |
+| atsam3x8h | untested |
 
 Peripheral support:
 
-* PMC/SUPC - clocking only (known issue affecting PLL configuration)
-* MATRIX - SYSIO control only (switch ERASE pin to PC0)
-* SYST - Delay (sleep) support
-* EFC0/1 - Setting operation cycle time only
-* PIOA-PIOF - Peripheral/GPIO toggling, pin configuration, driving/reading
-* WDT - support pretty much complete, but only disablement has been tested
+| peripheral | support level | notes |
+| ---------- | ------------- | ----- |
+| PMC/SUPC | clocking only | known issue affecting PLL configuration |
+| MATRIX | SYSIO control only | allows switching ERASE pin to PC0 |
+| SYST | Delay (sleep) support | |
+| EFC0/1 | Configure op cycle time only | |
+| PIOA-PIOF | switch between periph A/B/GPIO, pin config, driving/reading | |
+| WDT | mostly complete | only disablement has been tested |
 
 # Credits and Licensing
 
