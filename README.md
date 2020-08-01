@@ -1,4 +1,4 @@
-# ATSAM3X Support
+# ATSAM3X/A Support
 ===
 This repository contains low-level Peripheral Access Crates (./pac), a
 Hardware Abstraction Layer (./hal), and Board support definitions (./boards).
@@ -7,6 +7,8 @@ Hardware Abstraction Layer (./hal), and Board support definitions (./boards).
 
 ### Status
 
+* atsam3a4c - *complete*
+* atsam3a8c - *complete*
 * atsam3x4c - *complete*
 * atsam3x4e - *complete*
 * atsam3x8c - *complete*
@@ -14,8 +16,11 @@ Hardware Abstraction Layer (./hal), and Board support definitions (./boards).
 * atsam3x8h - *complete*
 The PAC support is generated from the Atmel Microchip Packs SVDs by:
 
-* downloading the atpack file (`Atmel SAM3X Series Device Support (1.0.50)`)
-* unzipping it
+* downloading the sam3x atpack file (`Atmel SAM3X Series Device
+  Support (1.0.50)`)
+* downloading the sam3a atpack file (`Atmel SAM3A Series Device
+  Support (1.0.50)`)
+* unzipping them
 * copying the entire contents of the svd directory from the zip output into
   the svd subdirectory of this project
 * running the `generate.sh` script located in the root of this project
@@ -28,7 +33,7 @@ For usage, license information, etc see the README.md for the PAC for your part.
 ## HAL
 
 For project status, usage, license information, etc see the README.md for the
-atsam3x-hal crate.
+atsam3xa-hal crate.
 
 ## Boards
 

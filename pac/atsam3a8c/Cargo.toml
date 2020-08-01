@@ -1,0 +1,25 @@
+[package]
+name = "atsam3a8c"
+description = "Peripheral access API for ATSAM3A8C microcontrollers from Atmel/Microchip (generated using svd2rust)"
+version = "0.1.0"
+authors = ["Will Page <compenguy@gmail.com>"]
+license = "MIT OR Apache-2.0"
+categories = ["embedded", "hardware-support", "no-std"]
+keywords = ["no-std", "arm", "cortex-m", "sam3x", "svd2rust", "pac"]
+readme = "README.md"
+
+[dependencies]
+bare-metal = "~0.2"
+cortex-m = "~0.6"
+vcell = "~0.1"
+
+[dependencies.cortex-m-rt]
+optional = true
+version = "~0.6"
+
+[features]
+rt = ["cortex-m-rt/device"]
+
+[lib]
+name = "atsam3a8c"
+path = "src/lib.rs"
