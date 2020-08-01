@@ -1,0 +1,46 @@
+//! HAL for the ATSAM3X family of microcontrollers
+//!
+//! This is an implementation of the [`embedded-hal`] traits for the ATSAM3X family of
+//! microcontrollers.
+//!
+//! [`embedded-hal`]: https://github.com/japaric/embedded-hal
+//!
+//! # Requirements
+//!
+//! This crate requires `arm-none-eabi-gcc` to be installed and available in `$PATH` to build.
+//!
+//! # Usage
+//!
+//! To build applications (binary crates) using this crate follow the [cortex-m-quickstart]
+//! instructions and add this crate as a dependency in step number 5 and make sure you enable the
+//! "rt" Cargo feature of this crate.
+//!
+//! [cortex-m-quickstart]: https://docs.rs/cortex-m-quickstart/~0.3
+//!
+//! # Examples
+//!
+//! Examples of *using* these abstractions can be found in the documentation of the [`f3`] crate.
+//!
+//! [`f3`]: https://docs.rs/f3/~0.6
+
+#![deny(missing_docs)]
+#![deny(warnings)]
+#![no_std]
+
+pub use embedded_hal as hal;
+#[cfg(feature = "atsam3a4c")] pub use atsam3a4c as target_device;
+#[cfg(feature = "atsam3a8c")] pub use atsam3a8c as target_device;
+#[cfg(feature = "atsam3x4c")] pub use atsam3x4c as target_device;
+#[cfg(feature = "atsam3x4e")] pub use atsam3x4e as target_device;
+#[cfg(feature = "atsam3x8c")] pub use atsam3x8c as target_device;
+#[cfg(feature = "atsam3x8e")] pub use atsam3x8e as target_device;
+#[cfg(feature = "atsam3x8h")] pub use atsam3x8h as target_device;
+
+pub mod bus;
+pub mod clock;
+pub mod delay;
+pub mod flash;
+pub mod gpio;
+pub mod prelude;
+pub mod time;
+pub mod watchdog;
