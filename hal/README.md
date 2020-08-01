@@ -1,7 +1,7 @@
 # ATSAM3X/A Hardware Abstraction Layer
 ===
 This crate abstracts target initialization and configuration, implementing
-traits from the `[embedded-hal](https://crates.io/crates/embedded-hal)` crate
+traits from the [embedded-hal](https://crates.io/crates/embedded-hal) crate
 for the [ATSAM3X/A family of Atmel MCUs](https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-11057-32-bit-Cortex-M3-Microcontroller-SAM3X-SAM3A_Datasheet.pdf#G19.1090731).
 
 ## Status
