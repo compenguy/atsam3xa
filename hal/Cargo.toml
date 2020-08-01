@@ -7,6 +7,8 @@ authors = ["Will Page <compenguy@gmail.com>"]
 license = "BSD0 AND (MIT OR Apache-2.0)"
 keywords = ["no-std", "arm", "cortex-m", "embedded-hal", "sam3x", "atsam3x", "sam3a", "atsam3a"]
 categories = ["embedded", "hardware-support", "no-std"]
+repository = "https://github.com/compenguy/atsam3xa.git"
+readme = "README.md"
 
 [dependencies]
 cortex-m = "~0.6"
