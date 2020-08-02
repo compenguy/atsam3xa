@@ -48,6 +48,7 @@ pub use embedded_hal as hal;
 
 pub mod bus;
 pub mod clock;
+pub mod comm;
 pub mod delay;
 pub mod flash;
 pub mod gpio;
