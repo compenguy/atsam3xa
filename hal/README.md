@@ -30,6 +30,8 @@ Peripheral support:
 | EFC0/1 | Configure op cycle time only | |
 | PIOA-PIOF | switch between periph A/B/GPIO, pin config, driving/reading | |
 | WDT | mostly complete | only disablement has been tested |
+| UART | serial RX/TX, no hardware flow control | Only TX tested |
+| USART | none | trivial to add serial RX/TX |
 
 # Credits and Licensing
 
