@@ -542,7 +542,7 @@ impl core::ops::DerefMut for SystemClocks {
 impl SystemClocks {
     /// Select the specified slow clock oscillator, and clock the system to run
     /// at that frequency.
-    pub fn with_slow_clk_32kosc(pmc: PMC, supc: SUPC, use_external_crystal: bool) -> Self {
+    pub fn with_slow_clk(pmc: PMC, supc: SUPC, use_external_crystal: bool) -> Self {
         let mut clk = Self {
             state: State { pmc, supc },
         };
