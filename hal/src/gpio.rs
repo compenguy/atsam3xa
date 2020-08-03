@@ -427,15 +427,17 @@ pub struct $Type {
         pub $name: $crate::gpio::[<P $pio_group $pin_ident>]<$crate::gpio::Unconfigured>
     ),+
 }
+} // end paste
 
 impl $Type {
+    $crate::paste! {
     #[cfg(feature = "sam3_c")]
     /// Returns the pins for the device
     pub fn new(pioa: $crate::target_device::PIOA, piob: $crate::target_device::PIOB) -> Self {
         let pa = $crate::gpio::PioGroup::from(pioa);
         let pb = $crate::gpio::PioGroup::from(piob);
         $(
-        let $name: [<p $pio_group>].[<p $pin_ident>]();
+        let $name = [<p $pio_group>].[<p $pin_ident>]();
         )+
         $Type {
             pa,
@@ -443,7 +445,9 @@ impl $Type {
             $($name),+,
         }
     }
+    } // end paste
 
+    $crate::paste! {
     #[cfg(feature = "sam3_e")]
     /// Returns the pins for the device
     pub fn new(pioa: $crate::target_device::PIOA, piob: $crate::target_device::PIOB, pioc: $crate::target_device::PIOC, piod: $crate::target_device::PIOD) -> Self {
@@ -462,7 +466,9 @@ impl $Type {
             $($name),+,
         }
     }
+    } // end paste
 
+    $crate::paste! {
     #[cfg(feature = "sam3x8h")]
     /// Returns the pins for the device
     pub fn new(pioa: $crate::target_device::PIOA, piob: $crate::target_device::PIOB, pioc: $crate::target_device::PIOC, piod: $crate::target_device::PIOD,  pioe: $crate::target_device::PIOE, piof: $crate::target_device::PIOF) -> Self {
@@ -485,7 +491,7 @@ impl $Type {
             $($name),+,
         }
     }
+    } // end paste
 }
-} // end paste
 
 }}

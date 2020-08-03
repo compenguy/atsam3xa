@@ -1,0 +1,27 @@
+[env]
+TARGET_NAME = "blinky_basic"
+IMAGE_NAME = "image.bin"
+SERDEV_LINUX = "ttyACM0"
+SERDEV_WINDOWS = "com8"
+
+[tasks.image]
+install_crate = "cargo-binutils"
+command = "cargo"
+args = ["objcopy", "--example", "${TARGET_NAME}", "--target", "thumbv7m-none-eabi", "--release", "--", "--output-target=binary", "${IMAGE_NAME}"]
+
+[tasks.init_serial]
+linux_alias = "linux_init_serial"
+windows_alias = "windows_init_serial"
+
+[tasks.linux_init_serial]
+command = "stty"
+args = ["-F", "/dev/${SERDEV_LINUX}", "speed", "1200", "cs8", "-cstopb", "-parenb"]
+
+[tasks.windows_init_serial]
+command = "mode"
+args = ["${SERDEV_WINDOWS}:1200,n,8,1"]
+
+[tasks.flash]
+command = "bossac"
+args = ["-p", "${SERDEV_LINUX}", "-e", "-w", "-v", "-b", "-R", "${IMAGE_NAME}"]
+dependencies = ["image", "init_serial"]
