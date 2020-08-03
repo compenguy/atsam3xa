@@ -29,14 +29,22 @@
 
 pub use paste::paste;
 
+#[cfg(feature = "sam3a4c")]
+pub use atsam3a4c as target_device;
+#[cfg(feature = "sam3a8c")]
+pub use atsam3a8c as target_device;
+#[cfg(feature = "sam3x4c")]
+pub use atsam3x4c as target_device;
+#[cfg(feature = "sam3x4e")]
+pub use atsam3x4e as target_device;
+#[cfg(feature = "sam3x8c")]
+pub use atsam3x8c as target_device;
+#[cfg(feature = "sam3x8e")]
+pub use atsam3x8e as target_device;
+#[cfg(feature = "sam3x8h")]
+pub use atsam3x8h as target_device;
+
 pub use embedded_hal as hal;
-#[cfg(feature = "sam3a4c")] pub use atsam3a4c as target_device;
-#[cfg(feature = "sam3a8c")] pub use atsam3a8c as target_device;
-#[cfg(feature = "sam3x4c")] pub use atsam3x4c as target_device;
-#[cfg(feature = "sam3x4e")] pub use atsam3x4e as target_device;
-#[cfg(feature = "sam3x8c")] pub use atsam3x8c as target_device;
-#[cfg(feature = "sam3x8e")] pub use atsam3x8e as target_device;
-#[cfg(feature = "sam3x8h")] pub use atsam3x8h as target_device;
 
 pub mod bus;
 pub mod clock;

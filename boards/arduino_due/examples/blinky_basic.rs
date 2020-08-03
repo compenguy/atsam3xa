@@ -6,10 +6,10 @@ use arduino_due as board;
 use board::entry;
 use board::prelude::*;
 
-use board::pac::{CorePeripherals, Peripherals};
 use board::hal::clock::SystemClocks;
 use board::hal::delay::Delay;
 use board::hal::watchdog::WdtBuilder;
+use board::pac::{CorePeripherals, Peripherals};
 
 #[entry]
 fn main() -> ! {

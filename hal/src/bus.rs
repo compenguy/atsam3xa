@@ -35,8 +35,7 @@ impl BusInterconnect {
     /// Toggle off the sysio configurations for pins, enabling their peripheral
     /// configurations instead.
     pub fn disable_sysio(&mut self) {
-        self.ccfg_sysio
-            .modify(|_, w| w.sysio12().clear_bit());
+        self.ccfg_sysio.modify(|_, w| w.sysio12().clear_bit());
     }
 
     /// Toggle on the sysio configurations for pins, disabling their peripheral
