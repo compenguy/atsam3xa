@@ -2,20 +2,15 @@
 use crate::hal::digital::{InputPin, OutputPin, StatefulOutputPin, ToggleableOutputPin};
 
 // SAM3A4C, SAM3A8C, SAM3X4C, and SAM3X8C (100-pin) only have PIOA-PIOB
-#[cfg(any(
-    feature = "atsam3a4c",
-    feature = "atsam3a8c",
-    feature = "atsam3x4c",
-    feature = "atsam3x8c"
-))]
+#[cfg(feature = "sam3_c")]
 use crate::target_device::{PIOA, PIOB};
 
 // SAM3X4E and SAM3X8E (144-pin) have PIOA-PIOD
-#[cfg(any(feature = "atsam3x4e", feature = "atsam3x8e"))]
+#[cfg(feature = "sam3_e")]
 use crate::target_device::{PIOA, PIOB, PIOC, PIOD};
 
 // SAM3X8H has 217 pins and PIOA-PIOF
-#[cfg(feature = "atsam3x8h")]
+#[cfg(feature = "sam3x8h")]
 use crate::target_device::{PIOA, PIOB, PIOC, PIOD, PIOE, PIOF};
 
 use core::marker::PhantomData;
@@ -356,7 +351,7 @@ pio_group!(
 );
 
 // PIOC pins 0-30 on the atsam3x4e, atsam3x8e, and atsam3x8h targets
-#[cfg(any(feature = "atsam3x4e", feature = "atsam3x8e", feature = "atsam3x8h"))]
+#[cfg(any(feature = "sam3_e", feature = "sam3x8h"))]
 pio_group!(
     c,
     13,
@@ -368,11 +363,11 @@ pio_group!(
 
 // PIOD is not supported by the atsam3x?c targets, and only has pins 0-10 on
 // the atsam3x?e targets
-#[cfg(any(feature = "atsam3x4e", feature = "atsam3x8e"))]
+#[cfg(feature = "sam3_e")]
 pio_group!(d, 14, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,]);
 
 // PIOD has pins 0-30 on the atsam3x8h target
-#[cfg(feature = "atsam3x8h")]
+#[cfg(feature = "sam3x8h")]
 pio_group!(
     d,
     14,
@@ -383,7 +378,7 @@ pio_group!(
 );
 
 // PIOE has pins 0-31 on the atsam3x8h target
-#[cfg(feature = "atsam3x8h")]
+#[cfg(feature = "sam3x8h")]
 pio_group!(
     e,
     15,
@@ -394,7 +389,7 @@ pio_group!(
 );
 
 // PIOF has pins 0-6 on the atsam3x8h target
-#[cfg(feature = "atsam3x8h")]
+#[cfg(feature = "sam3x8h")]
 pio_group!(f, 16, [0, 1, 2, 3, 4, 5, 6,]);
 
 /// This macro is a helper for defining a `Pins` type in a board support
@@ -434,7 +429,7 @@ pub struct $Type {
 }
 
 impl $Type {
-    #[cfg(any(feature = "atsam3a4c", feature = "atsam3a8c", feature = "atsam3x4c", feature = "atsam3x8c"))]
+    #[cfg(feature = "sam3_c")]
     /// Returns the pins for the device
     pub fn new(pioa: $crate::target_device::PIOA, piob: $crate::target_device::PIOB) -> Self {
         let pa = $crate::gpio::PioGroup::from(pioa);
@@ -449,7 +444,7 @@ impl $Type {
         }
     }
 
-    #[cfg(any(feature = "atsam3x4e", feature = "atsam3x8e"))]
+    #[cfg(feature = "sam3_e")]
     /// Returns the pins for the device
     pub fn new(pioa: $crate::target_device::PIOA, piob: $crate::target_device::PIOB, pioc: $crate::target_device::PIOC, piod: $crate::target_device::PIOD) -> Self {
         let pa = $crate::gpio::PioGroup::from(pioa);
@@ -468,7 +463,7 @@ impl $Type {
         }
     }
 
-    #[cfg(feature = "atsam3x8h")]
+    #[cfg(feature = "sam3x8h")]
     /// Returns the pins for the device
     pub fn new(pioa: $crate::target_device::PIOA, piob: $crate::target_device::PIOB, pioc: $crate::target_device::PIOC, piod: $crate::target_device::PIOD,  pioe: $crate::target_device::PIOE, piof: $crate::target_device::PIOF) -> Self {
         let pa = $crate::gpio::PioGroup::from(pioa);
