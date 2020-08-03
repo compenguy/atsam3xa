@@ -417,9 +417,7 @@ impl State {
             PeripheralID::Id06Eefc0 => (), // Clock not under PMC control
             PeripheralID::Id07Eefc1 => (), // Clock not under PMC control
             PeripheralID::Id08Uart => self.pmc_pcer0.write_with_zero(|w| w.pid8().set_bit()),
-            PeripheralID::Id09SmcSdramc => {
-                self.pmc_pcer0.write_with_zero(|w| w.pid9().set_bit())
-            }
+            PeripheralID::Id09SmcSdramc => self.pmc_pcer0.write_with_zero(|w| w.pid9().set_bit()),
             PeripheralID::Id10Sdramc => self.pmc_pcer0.write_with_zero(|w| w.pid10().set_bit()),
             PeripheralID::Id11PioA => self.pmc_pcer0.write_with_zero(|w| w.pid11().set_bit()),
             PeripheralID::Id12PioB => self.pmc_pcer0.write_with_zero(|w| w.pid12().set_bit()),
@@ -472,9 +470,7 @@ impl State {
             PeripheralID::Id06Eefc0 => (), // Clock not under PMC control
             PeripheralID::Id07Eefc1 => (), // Clock not under PMC control
             PeripheralID::Id08Uart => self.pmc_pcdr0.write_with_zero(|w| w.pid8().set_bit()),
-            PeripheralID::Id09SmcSdramc => {
-                self.pmc_pcdr0.write_with_zero(|w| w.pid9().set_bit())
-            }
+            PeripheralID::Id09SmcSdramc => self.pmc_pcdr0.write_with_zero(|w| w.pid9().set_bit()),
             PeripheralID::Id10Sdramc => self.pmc_pcdr0.write_with_zero(|w| w.pid10().set_bit()),
             PeripheralID::Id11PioA => self.pmc_pcdr0.write_with_zero(|w| w.pid11().set_bit()),
             PeripheralID::Id12PioB => self.pmc_pcdr0.write_with_zero(|w| w.pid12().set_bit()),

@@ -268,4 +268,3 @@ define_pins!(
     /// USB VBOF
     pin usb_vbof = b : 10,
 );
-
