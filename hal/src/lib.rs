@@ -27,6 +27,8 @@
 #![deny(warnings)]
 #![no_std]
 
+pub use paste::paste;
+
 pub use embedded_hal as hal;
 #[cfg(feature = "atsam3a4c")] pub use atsam3a4c as target_device;
 #[cfg(feature = "atsam3a8c")] pub use atsam3a8c as target_device;
