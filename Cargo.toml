@@ -1,5 +1,6 @@
 [workspace]
 members = [
+    "boards/*",
     "hal",
     "pac/atsam3*",
 ]
