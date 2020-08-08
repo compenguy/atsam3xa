@@ -75,16 +75,6 @@ pub struct PllAClockConfig {
     pub count: u8,
 }
 
-/// Configuration options for setting up the UPLL clock source.  To use USB,
-/// the main clock must be configured to use the external crystal oscillator,
-/// and it must be a 12MHz crystal.  The output frequency (TODO: unverified)
-/// is the source clock frequency * 40, although clocks using this as an input
-/// may apply other dividers to it.
-pub struct UPllClockConfig {
-    /// how many slow clock ticks are required for UPLL to settle
-    pub count: u8,
-}
-
 /// `SystemClocks` encapsulates the PMC and SUPC clock hardware.
 /// It provides a type safe way to configure the system clocks.
 /// Initializing the `SystemClocks` instance configures the system to run at
@@ -128,6 +118,14 @@ impl SystemClocks {
         let mut clk = Self { pmc, supc };
         clk.set_main_clock_source(source);
         clk.set_master_clock_source_and_prescaler(ClockSource::MAIN_CLK, None, false);
+
+        // If USB feature is enabled and main clock is set to 12MHz also enable
+        // the UPLL clock.
+        #[cfg(feature = "usb")]
+        if clk.get_main_clock_rate() == MegaHertz(12).into() {
+            clk.enable_upll(0x10u8);
+        }
+
         clk
     }
 
@@ -144,8 +142,12 @@ impl SystemClocks {
         });
         clk.set_master_clock_source_and_prescaler(ClockSource::PLLA_CLK, None, true);
 
+        // If USB feature is enabled and main clock is set to 12MHz also enable
+        // the UPLL clock.
         #[cfg(feature = "usb")]
-        clk.enable_upll();
+        if clk.get_main_clock_rate() == MegaHertz(12).into() {
+            clk.enable_upll(0x10u8);
+        }
 
         clk
     }
@@ -365,10 +367,16 @@ impl SystemClocks {
         while !self.pmc_sr.read().locka().bits() {}
     }
 
-    /// Enable the UTMI PLL, primarily used for clocking USB.
-    pub fn enable_upll(&mut self, config: UPllClockConfig) {
+    /// Enable the UTMI PLL, primarily used for clocking USB. The count is how
+    /// many slow clock ticks * 8 to wait for UPLL to settle.
+    pub fn enable_upll(&mut self, count: u8) {
+        // early exit if it's already enabled
+        if self.ckgr_uckr.read().upllen().bits() {
+            return;
+        }
+
         self.ckgr_uckr
-            .modify(|_, w| unsafe { w.upllen().set_bit().upllcount().bits(config.count) });
+            .modify(|_, w| unsafe { w.upllen().set_bit().upllcount().bits(count) });
 
         // Wait until pll is locked
         // 0 = not locked, 1 = locked
