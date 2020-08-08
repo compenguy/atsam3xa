@@ -5,6 +5,7 @@
 //! that the peripherals have been correctly configured.
 use crate::target_device;
 use crate::time::{Hertz, MegaHertz};
+use crate::PeripheralID;
 use target_device::generic::Variant;
 use target_device::pmc::ckgr_mor::MOSCRCF_A::*;
 use target_device::pmc::pmc_mckr::{CSS_A::*, PRES_A::*};
@@ -81,102 +82,6 @@ pub struct PllAClockConfig {
 pub struct UPllClockConfig {
     /// how many slow clock ticks are required for UPLL to settle
     pub count: u8,
-}
-
-/// Identifier used for enabling/disabling the clock to that peripheral, as
-/// well as for controlling the peripher interrupt in the NVIC. Peripherals
-/// 0-8, and 10 are always clocked.
-pub enum PeripheralID {
-    /// ID  0, Supply controller, NVIC Interrupt, No PMC clock control
-    Id00Supc = 0,
-    /// ID  1, Reset controller, NVIC Interrupt, No PMC clock control
-    Id01Rstc,
-    /// ID  2, Real-time clock, NVIC Interrupt, No PMC clock control
-    Id02Rtc,
-    /// ID  3, Real-time timer, NVIC Interrupt, No PMC clock control
-    Id03Rtt,
-    /// ID  4, Watchdog Timer, NVIC Interrupt, No PMC clock control
-    Id04Wdg,
-    /// ID  5, Power management controller, NVIC Interrupt, No PMC clock control
-    Id05Pmc,
-    /// ID  6, Enh. emb. flash cnt 1, NVIC Interrupt, No PMC clock control
-    Id06Eefc0,
-    /// ID  7, Enh. emb. flash cnt 2, NVIC Interrupt, No PMC clock control
-    Id07Eefc1,
-    /// ID  8, Univ. Async. Rx Tx, NVIC Interrupt, PMC clock controllable
-    Id08Uart,
-    /// ID  9, Static mem cnt, SDRAM cnt, NVIC Interrupt, PMC clock controllable
-    Id09SmcSdramc,
-    /// ID 10, SDRAM cnt, NVIC Interrupt, PMC clock controllable
-    Id10Sdramc,
-    /// ID 11, Parallel I/O controller A, NVIC Interrupt, PMC clock controllable
-    Id11PioA,
-    /// ID 12, Parallel I/O controller B, NVIC Interrupt, PMC clock controllable
-    Id12PioB,
-    /// ID 13, Parallel I/O controller C, NVIC Interrupt, PMC clock controllable
-    Id13PioC,
-    /// ID 14, Parallel I/O controller D, NVIC Interrupt, PMC clock controllable
-    Id14PioD,
-    /// ID 15, Parallel I/O controller E, NVIC Interrupt, PMC clock controllable
-    Id15PioE,
-    /// ID 16, Parallel I/O controller F, NVIC Interrupt, PMC clock controllable
-    Id16PioF,
-    /// ID 17, Sync UART 0, NVIC Interrupt, PMC clock controllable
-    Id17Usart0,
-    /// ID 18, Sync UART 1, NVIC Interrupt, PMC clock controllable
-    Id18Usart1,
-    /// ID 19, Sync UART 2, NVIC Interrupt, PMC clock controllable
-    Id19Usart2,
-    /// ID 20, Sync UART 3, NVIC Interrupt, PMC clock controllable
-    Id20Usart3,
-    /// ID 21, High speed media card intf., NVIC Interrupt, PMC clock controllable
-    Id21Hsmci,
-    /// ID 22, Two-wire intf. 0, NVIC Interrupt, PMC clock controllable
-    Id22Twi0,
-    /// ID 23, Two-wire intf. 1, NVIC Interrupt, PMC clock controllable
-    Id23Twi1,
-    /// ID 24, Serial peripheral intf. 0, NVIC Interrupt, PMC clock controllable
-    Id24Spi0,
-    /// ID 25, Serial peripheral intf. 1, NVIC Interrupt, PMC clock controllable
-    Id25Spi1,
-    /// ID 26, Sync. serial cnt, NVIC Interrupt, PMC clock controllable
-    Id26Ssc,
-    /// ID 27, Timer counter ch 0, NVIC Interrupt, PMC clock controllable
-    Id27Tc0,
-    /// ID 28, Timer counter ch 1, NVIC Interrupt, PMC clock controllable
-    Id28Tc1,
-    /// ID 29, Timer counter ch 2, NVIC Interrupt, PMC clock controllable
-    Id29Tc2,
-    /// ID 30, Timer counter ch 3, NVIC Interrupt, PMC clock controllable
-    Id30Tc3,
-    /// ID 31, Timer counter ch 4, NVIC Interrupt, PMC clock controllable
-    Id31Tc4,
-    /// ID 32, Timer counter ch 5, NVIC Interrupt, PMC clock controllable
-    Id32Tc5,
-    /// ID 33, Timer counter ch 6, NVIC Interrupt, PMC clock controllable
-    Id33Tc6,
-    /// ID 34, Timer counter ch 7, NVIC Interrupt, PMC clock controllable
-    Id34Tc7,
-    /// ID 35, Timer counter ch 8, NVIC Interrupt, PMC clock controllable
-    Id35Tc8,
-    /// ID 36, Pulse width mod. cnt, NVIC Interrupt, PMC clock controllable
-    Id36Pwm,
-    /// ID 37, ADC controller, NVIC Interrupt, PMC clock controllable
-    Id37Adc,
-    /// ID 38, DAC controller, NVIC Interrupt, PMC clock controllable
-    Id38Dacc,
-    /// ID 39, DMA controller, NVIC Interrupt, PMC clock controllable
-    Id39Dmac,
-    /// ID 40, USB OTG High Speed, NVIC Interrupt, PMC clock controllable
-    Id40Uotghs,
-    /// ID 41, True random number gen., NVIC Interrupt, PMC clock controllable
-    Id41Trng,
-    /// ID 42, Ethernet MAC, NVIC Interrupt, PMC clock controllable
-    Id42Emac,
-    /// ID 43, CAN controller 0, NVIC Interrupt, PMC clock controllable
-    Id43Can0,
-    /// ID 44, CAN controller 1, NVIC Interrupt, PMC clock controllable
-    Id44Can1,
 }
 
 /// The state objects for the power management peripherals on the SoC, which
@@ -297,8 +202,7 @@ impl State {
         }
     }
 
-    /// Disable PLLA by setting the clock multiplier to zero
-    // Setting the multiplier to 0 disables it
+    /// Disable PLLA by setting the clock multiplier to zero.
     pub fn disable_plla(&mut self) {
         self.configure_plla(PllAClockConfig {
             mula: 0,
@@ -408,51 +312,56 @@ impl State {
     /// will silently do nothing.
     pub fn enable_peripheral_clock(&mut self, pid: PeripheralID) {
         match pid {
-            PeripheralID::Id00Supc => (),  // Clock not under PMC control
-            PeripheralID::Id01Rstc => (),  // Clock not under PMC control
-            PeripheralID::Id02Rtc => (),   // Clock not under PMC control
-            PeripheralID::Id03Rtt => (),   // Clock not under PMC control
-            PeripheralID::Id04Wdg => (),   // Clock not under PMC control
-            PeripheralID::Id05Pmc => (),   // Clock not under PMC control
-            PeripheralID::Id06Eefc0 => (), // Clock not under PMC control
-            PeripheralID::Id07Eefc1 => (), // Clock not under PMC control
-            PeripheralID::Id08Uart => self.pmc_pcer0.write_with_zero(|w| w.pid8().set_bit()),
-            PeripheralID::Id09SmcSdramc => self.pmc_pcer0.write_with_zero(|w| w.pid9().set_bit()),
-            PeripheralID::Id10Sdramc => self.pmc_pcer0.write_with_zero(|w| w.pid10().set_bit()),
-            PeripheralID::Id11PioA => self.pmc_pcer0.write_with_zero(|w| w.pid11().set_bit()),
-            PeripheralID::Id12PioB => self.pmc_pcer0.write_with_zero(|w| w.pid12().set_bit()),
-            PeripheralID::Id13PioC => self.pmc_pcer0.write_with_zero(|w| w.pid13().set_bit()),
-            PeripheralID::Id14PioD => self.pmc_pcer0.write_with_zero(|w| w.pid14().set_bit()),
-            PeripheralID::Id15PioE => self.pmc_pcer0.write_with_zero(|w| w.pid15().set_bit()),
-            PeripheralID::Id16PioF => self.pmc_pcer0.write_with_zero(|w| w.pid16().set_bit()),
-            PeripheralID::Id17Usart0 => self.pmc_pcer0.write_with_zero(|w| w.pid17().set_bit()),
-            PeripheralID::Id18Usart1 => self.pmc_pcer0.write_with_zero(|w| w.pid18().set_bit()),
-            PeripheralID::Id19Usart2 => self.pmc_pcer0.write_with_zero(|w| w.pid19().set_bit()),
-            PeripheralID::Id20Usart3 => self.pmc_pcer0.write_with_zero(|w| w.pid20().set_bit()),
-            PeripheralID::Id21Hsmci => self.pmc_pcer0.write_with_zero(|w| w.pid21().set_bit()),
-            PeripheralID::Id22Twi0 => self.pmc_pcer0.write_with_zero(|w| w.pid22().set_bit()),
-            PeripheralID::Id23Twi1 => self.pmc_pcer0.write_with_zero(|w| w.pid23().set_bit()),
-            PeripheralID::Id24Spi0 => self.pmc_pcer0.write_with_zero(|w| w.pid24().set_bit()),
-            PeripheralID::Id25Spi1 => self.pmc_pcer0.write_with_zero(|w| w.pid25().set_bit()),
-            PeripheralID::Id26Ssc => self.pmc_pcer0.write_with_zero(|w| w.pid26().set_bit()),
-            PeripheralID::Id27Tc0 => self.pmc_pcer0.write_with_zero(|w| w.pid27().set_bit()),
-            PeripheralID::Id28Tc1 => self.pmc_pcer0.write_with_zero(|w| w.pid28().set_bit()),
-            PeripheralID::Id29Tc2 => self.pmc_pcer0.write_with_zero(|w| w.pid29().set_bit()),
-            PeripheralID::Id30Tc3 => self.pmc_pcer0.write_with_zero(|w| w.pid30().set_bit()),
-            PeripheralID::Id31Tc4 => self.pmc_pcer0.write_with_zero(|w| w.pid31().set_bit()),
-            PeripheralID::Id32Tc5 => self.pmc_pcer1.write_with_zero(|w| w.pid32().set_bit()),
-            PeripheralID::Id33Tc6 => self.pmc_pcer1.write_with_zero(|w| w.pid33().set_bit()),
-            PeripheralID::Id34Tc7 => self.pmc_pcer1.write_with_zero(|w| w.pid34().set_bit()),
-            PeripheralID::Id35Tc8 => self.pmc_pcer1.write_with_zero(|w| w.pid35().set_bit()),
-            PeripheralID::Id36Pwm => self.pmc_pcer1.write_with_zero(|w| w.pid36().set_bit()),
-            PeripheralID::Id37Adc => self.pmc_pcer1.write_with_zero(|w| w.pid37().set_bit()),
-            PeripheralID::Id38Dacc => self.pmc_pcer1.write_with_zero(|w| w.pid38().set_bit()),
-            PeripheralID::Id39Dmac => self.pmc_pcer1.write_with_zero(|w| w.pid39().set_bit()),
-            PeripheralID::Id40Uotghs => self.pmc_pcer1.write_with_zero(|w| w.pid40().set_bit()),
-            PeripheralID::Id41Trng => self.pmc_pcer1.write_with_zero(|w| w.pid41().set_bit()),
-            PeripheralID::Id42Emac => self.pmc_pcer1.write_with_zero(|w| w.pid42().set_bit()),
-            PeripheralID::Id43Can0 => self.pmc_pcer1.write_with_zero(|w| w.pid43().set_bit()),
-            PeripheralID::Id44Can1 => self.pmc_pcer1.write_with_zero(|w| w.pid44().set_bit()),
+            PeripheralID::PMC => (),  // Clock not under PMC control
+            PeripheralID::EFC0 => (), // Clock not under PMC control
+            PeripheralID::EFC1 => (), // Clock not under PMC control
+            PeripheralID::UART => self.pmc_pcer0.write_with_zero(|w| w.pid8().set_bit()),
+            #[cfg(feature = "sam3x8h")]
+            PeripheralID::SDRAMC => self.pmc_pcer0.write_with_zero(|w| w.pid10().set_bit()),
+            PeripheralID::PIOA => self.pmc_pcer0.write_with_zero(|w| w.pid11().set_bit()),
+            PeripheralID::PIOB => self.pmc_pcer0.write_with_zero(|w| w.pid12().set_bit()),
+            #[cfg(any(feature = "sam3_e", feature = "sam3x8h"))]
+            PeripheralID::PIOC => self.pmc_pcer0.write_with_zero(|w| w.pid13().set_bit()),
+            #[cfg(any(feature = "sam3_e", feature = "sam3x8h"))]
+            PeripheralID::PIOD => self.pmc_pcer0.write_with_zero(|w| w.pid14().set_bit()),
+            #[cfg(feature = "sam3x8h")]
+            PeripheralID::PIOE => self.pmc_pcer0.write_with_zero(|w| w.pid15().set_bit()),
+            #[cfg(feature = "sam3x8h")]
+            PeripheralID::PIOF => self.pmc_pcer0.write_with_zero(|w| w.pid16().set_bit()),
+            PeripheralID::USART0 => self.pmc_pcer0.write_with_zero(|w| w.pid17().set_bit()),
+            PeripheralID::USART1 => self.pmc_pcer0.write_with_zero(|w| w.pid18().set_bit()),
+            PeripheralID::USART2 => self.pmc_pcer0.write_with_zero(|w| w.pid19().set_bit()),
+            #[cfg(any(feature = "sam3_e", feature = "sam3x8h"))]
+            PeripheralID::USART3 => self.pmc_pcer0.write_with_zero(|w| w.pid20().set_bit()),
+            PeripheralID::HSMCI => self.pmc_pcer0.write_with_zero(|w| w.pid21().set_bit()),
+            PeripheralID::TWI0 => self.pmc_pcer0.write_with_zero(|w| w.pid22().set_bit()),
+            PeripheralID::TWI1 => self.pmc_pcer0.write_with_zero(|w| w.pid23().set_bit()),
+            PeripheralID::SPI0 => self.pmc_pcer0.write_with_zero(|w| w.pid24().set_bit()),
+            #[cfg(feature = "sam3x8h")]
+            PeripheralID::SPI1 => self.pmc_pcer0.write_with_zero(|w| w.pid25().set_bit()),
+            PeripheralID::SSC => self.pmc_pcer0.write_with_zero(|w| w.pid26().set_bit()),
+            PeripheralID::TC0 => self.pmc_pcer0.write_with_zero(|w| w.pid27().set_bit()),
+            PeripheralID::TC1 => self.pmc_pcer0.write_with_zero(|w| w.pid28().set_bit()),
+            PeripheralID::TC2 => self.pmc_pcer0.write_with_zero(|w| w.pid29().set_bit()),
+            PeripheralID::TC3 => self.pmc_pcer0.write_with_zero(|w| w.pid30().set_bit()),
+            PeripheralID::TC4 => self.pmc_pcer0.write_with_zero(|w| w.pid31().set_bit()),
+            PeripheralID::TC5 => self.pmc_pcer1.write_with_zero(|w| w.pid32().set_bit()),
+            #[cfg(any(feature = "sam3_e", feature = "sam3x8h"))]
+            PeripheralID::TC6 => self.pmc_pcer1.write_with_zero(|w| w.pid33().set_bit()),
+            #[cfg(any(feature = "sam3_e", feature = "sam3x8h"))]
+            PeripheralID::TC7 => self.pmc_pcer1.write_with_zero(|w| w.pid34().set_bit()),
+            #[cfg(any(feature = "sam3_e", feature = "sam3x8h"))]
+            PeripheralID::TC8 => self.pmc_pcer1.write_with_zero(|w| w.pid35().set_bit()),
+            PeripheralID::PWM => self.pmc_pcer1.write_with_zero(|w| w.pid36().set_bit()),
+            PeripheralID::ADC => self.pmc_pcer1.write_with_zero(|w| w.pid37().set_bit()),
+            PeripheralID::DACC => self.pmc_pcer1.write_with_zero(|w| w.pid38().set_bit()),
+            PeripheralID::DMAC => self.pmc_pcer1.write_with_zero(|w| w.pid39().set_bit()),
+            PeripheralID::UOTGHS => self.pmc_pcer1.write_with_zero(|w| w.pid40().set_bit()),
+            PeripheralID::TRNG => self.pmc_pcer1.write_with_zero(|w| w.pid41().set_bit()),
+            #[cfg(feature = "sam3x")]
+            PeripheralID::EMAC => self.pmc_pcer1.write_with_zero(|w| w.pid42().set_bit()),
+            PeripheralID::CAN0 => self.pmc_pcer1.write_with_zero(|w| w.pid43().set_bit()),
+            PeripheralID::CAN1 => self.pmc_pcer1.write_with_zero(|w| w.pid44().set_bit()),
         }
     }
 
@@ -461,51 +370,56 @@ impl State {
     /// will silently do nothing.
     pub fn disable_peripheral_clock(&mut self, pid: PeripheralID) {
         match pid {
-            PeripheralID::Id00Supc => (),  // Clock not under PMC control
-            PeripheralID::Id01Rstc => (),  // Clock not under PMC control
-            PeripheralID::Id02Rtc => (),   // Clock not under PMC control
-            PeripheralID::Id03Rtt => (),   // Clock not under PMC control
-            PeripheralID::Id04Wdg => (),   // Clock not under PMC control
-            PeripheralID::Id05Pmc => (),   // Clock not under PMC control
-            PeripheralID::Id06Eefc0 => (), // Clock not under PMC control
-            PeripheralID::Id07Eefc1 => (), // Clock not under PMC control
-            PeripheralID::Id08Uart => self.pmc_pcdr0.write_with_zero(|w| w.pid8().set_bit()),
-            PeripheralID::Id09SmcSdramc => self.pmc_pcdr0.write_with_zero(|w| w.pid9().set_bit()),
-            PeripheralID::Id10Sdramc => self.pmc_pcdr0.write_with_zero(|w| w.pid10().set_bit()),
-            PeripheralID::Id11PioA => self.pmc_pcdr0.write_with_zero(|w| w.pid11().set_bit()),
-            PeripheralID::Id12PioB => self.pmc_pcdr0.write_with_zero(|w| w.pid12().set_bit()),
-            PeripheralID::Id13PioC => self.pmc_pcdr0.write_with_zero(|w| w.pid13().set_bit()),
-            PeripheralID::Id14PioD => self.pmc_pcdr0.write_with_zero(|w| w.pid14().set_bit()),
-            PeripheralID::Id15PioE => self.pmc_pcdr0.write_with_zero(|w| w.pid15().set_bit()),
-            PeripheralID::Id16PioF => self.pmc_pcdr0.write_with_zero(|w| w.pid16().set_bit()),
-            PeripheralID::Id17Usart0 => self.pmc_pcdr0.write_with_zero(|w| w.pid17().set_bit()),
-            PeripheralID::Id18Usart1 => self.pmc_pcdr0.write_with_zero(|w| w.pid18().set_bit()),
-            PeripheralID::Id19Usart2 => self.pmc_pcdr0.write_with_zero(|w| w.pid19().set_bit()),
-            PeripheralID::Id20Usart3 => self.pmc_pcdr0.write_with_zero(|w| w.pid20().set_bit()),
-            PeripheralID::Id21Hsmci => self.pmc_pcdr0.write_with_zero(|w| w.pid21().set_bit()),
-            PeripheralID::Id22Twi0 => self.pmc_pcdr0.write_with_zero(|w| w.pid22().set_bit()),
-            PeripheralID::Id23Twi1 => self.pmc_pcdr0.write_with_zero(|w| w.pid23().set_bit()),
-            PeripheralID::Id24Spi0 => self.pmc_pcdr0.write_with_zero(|w| w.pid24().set_bit()),
-            PeripheralID::Id25Spi1 => self.pmc_pcdr0.write_with_zero(|w| w.pid25().set_bit()),
-            PeripheralID::Id26Ssc => self.pmc_pcdr0.write_with_zero(|w| w.pid26().set_bit()),
-            PeripheralID::Id27Tc0 => self.pmc_pcdr0.write_with_zero(|w| w.pid27().set_bit()),
-            PeripheralID::Id28Tc1 => self.pmc_pcdr0.write_with_zero(|w| w.pid28().set_bit()),
-            PeripheralID::Id29Tc2 => self.pmc_pcdr0.write_with_zero(|w| w.pid29().set_bit()),
-            PeripheralID::Id30Tc3 => self.pmc_pcdr0.write_with_zero(|w| w.pid30().set_bit()),
-            PeripheralID::Id31Tc4 => self.pmc_pcdr0.write_with_zero(|w| w.pid31().set_bit()),
-            PeripheralID::Id32Tc5 => self.pmc_pcdr1.write_with_zero(|w| w.pid32().set_bit()),
-            PeripheralID::Id33Tc6 => self.pmc_pcdr1.write_with_zero(|w| w.pid33().set_bit()),
-            PeripheralID::Id34Tc7 => self.pmc_pcdr1.write_with_zero(|w| w.pid34().set_bit()),
-            PeripheralID::Id35Tc8 => self.pmc_pcdr1.write_with_zero(|w| w.pid35().set_bit()),
-            PeripheralID::Id36Pwm => self.pmc_pcdr1.write_with_zero(|w| w.pid36().set_bit()),
-            PeripheralID::Id37Adc => self.pmc_pcdr1.write_with_zero(|w| w.pid37().set_bit()),
-            PeripheralID::Id38Dacc => self.pmc_pcdr1.write_with_zero(|w| w.pid38().set_bit()),
-            PeripheralID::Id39Dmac => self.pmc_pcdr1.write_with_zero(|w| w.pid39().set_bit()),
-            PeripheralID::Id40Uotghs => self.pmc_pcdr1.write_with_zero(|w| w.pid40().set_bit()),
-            PeripheralID::Id41Trng => self.pmc_pcdr1.write_with_zero(|w| w.pid41().set_bit()),
-            PeripheralID::Id42Emac => self.pmc_pcdr1.write_with_zero(|w| w.pid42().set_bit()),
-            PeripheralID::Id43Can0 => self.pmc_pcdr1.write_with_zero(|w| w.pid43().set_bit()),
-            PeripheralID::Id44Can1 => self.pmc_pcdr1.write_with_zero(|w| w.pid44().set_bit()),
+            PeripheralID::PMC => (),  // Clock not under PMC control
+            PeripheralID::EFC0 => (), // Clock not under PMC control
+            PeripheralID::EFC1 => (), // Clock not under PMC control
+            PeripheralID::UART => self.pmc_pcdr0.write_with_zero(|w| w.pid8().set_bit()),
+            #[cfg(feature = "sam3x8h")]
+            PeripheralID::SDRAMC => self.pmc_pcdr0.write_with_zero(|w| w.pid10().set_bit()),
+            PeripheralID::PIOA => self.pmc_pcdr0.write_with_zero(|w| w.pid11().set_bit()),
+            PeripheralID::PIOB => self.pmc_pcdr0.write_with_zero(|w| w.pid12().set_bit()),
+            #[cfg(any(feature = "sam3_e", feature = "sam3x8h"))]
+            PeripheralID::PIOC => self.pmc_pcdr0.write_with_zero(|w| w.pid13().set_bit()),
+            #[cfg(any(feature = "sam3_e", feature = "sam3x8h"))]
+            PeripheralID::PIOD => self.pmc_pcdr0.write_with_zero(|w| w.pid14().set_bit()),
+            #[cfg(feature = "sam3x8h")]
+            PeripheralID::PIOE => self.pmc_pcdr0.write_with_zero(|w| w.pid15().set_bit()),
+            #[cfg(feature = "sam3x8h")]
+            PeripheralID::PIOF => self.pmc_pcdr0.write_with_zero(|w| w.pid16().set_bit()),
+            PeripheralID::USART0 => self.pmc_pcdr0.write_with_zero(|w| w.pid17().set_bit()),
+            PeripheralID::USART1 => self.pmc_pcdr0.write_with_zero(|w| w.pid18().set_bit()),
+            PeripheralID::USART2 => self.pmc_pcdr0.write_with_zero(|w| w.pid19().set_bit()),
+            #[cfg(any(feature = "sam3_e", feature = "sam3x8h"))]
+            PeripheralID::USART3 => self.pmc_pcdr0.write_with_zero(|w| w.pid20().set_bit()),
+            PeripheralID::HSMCI => self.pmc_pcdr0.write_with_zero(|w| w.pid21().set_bit()),
+            PeripheralID::TWI0 => self.pmc_pcdr0.write_with_zero(|w| w.pid22().set_bit()),
+            PeripheralID::TWI1 => self.pmc_pcdr0.write_with_zero(|w| w.pid23().set_bit()),
+            PeripheralID::SPI0 => self.pmc_pcdr0.write_with_zero(|w| w.pid24().set_bit()),
+            #[cfg(feature = "sam3x8h")]
+            PeripheralID::SPI1 => self.pmc_pcdr0.write_with_zero(|w| w.pid25().set_bit()),
+            PeripheralID::SSC => self.pmc_pcdr0.write_with_zero(|w| w.pid26().set_bit()),
+            PeripheralID::TC0 => self.pmc_pcdr0.write_with_zero(|w| w.pid27().set_bit()),
+            PeripheralID::TC1 => self.pmc_pcdr0.write_with_zero(|w| w.pid28().set_bit()),
+            PeripheralID::TC2 => self.pmc_pcdr0.write_with_zero(|w| w.pid29().set_bit()),
+            PeripheralID::TC3 => self.pmc_pcdr0.write_with_zero(|w| w.pid30().set_bit()),
+            PeripheralID::TC4 => self.pmc_pcdr0.write_with_zero(|w| w.pid31().set_bit()),
+            PeripheralID::TC5 => self.pmc_pcdr1.write_with_zero(|w| w.pid32().set_bit()),
+            #[cfg(any(feature = "sam3_e", feature = "sam3x8h"))]
+            PeripheralID::TC6 => self.pmc_pcdr1.write_with_zero(|w| w.pid33().set_bit()),
+            #[cfg(any(feature = "sam3_e", feature = "sam3x8h"))]
+            PeripheralID::TC7 => self.pmc_pcdr1.write_with_zero(|w| w.pid34().set_bit()),
+            #[cfg(any(feature = "sam3_e", feature = "sam3x8h"))]
+            PeripheralID::TC8 => self.pmc_pcdr1.write_with_zero(|w| w.pid35().set_bit()),
+            PeripheralID::PWM => self.pmc_pcdr1.write_with_zero(|w| w.pid36().set_bit()),
+            PeripheralID::ADC => self.pmc_pcdr1.write_with_zero(|w| w.pid37().set_bit()),
+            PeripheralID::DACC => self.pmc_pcdr1.write_with_zero(|w| w.pid38().set_bit()),
+            PeripheralID::DMAC => self.pmc_pcdr1.write_with_zero(|w| w.pid39().set_bit()),
+            PeripheralID::UOTGHS => self.pmc_pcdr1.write_with_zero(|w| w.pid40().set_bit()),
+            PeripheralID::TRNG => self.pmc_pcdr1.write_with_zero(|w| w.pid41().set_bit()),
+            #[cfg(feature = "sam3x")]
+            PeripheralID::EMAC => self.pmc_pcdr1.write_with_zero(|w| w.pid42().set_bit()),
+            PeripheralID::CAN0 => self.pmc_pcdr1.write_with_zero(|w| w.pid43().set_bit()),
+            PeripheralID::CAN1 => self.pmc_pcdr1.write_with_zero(|w| w.pid44().set_bit()),
         }
     }
 }

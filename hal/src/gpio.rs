@@ -295,8 +295,8 @@ crate::paste! {
 impl PioGroup<[<PIO $group_id:upper>]> {
     /// Return the Peripheral ID for the PIOF Controller, used for controlling
     /// clocks and interrupts.
-    pub fn peripheral_id() -> $crate::clock::PeripheralID {
-        $crate::clock::PeripheralID::[<Id $peripheral_id Pio $group_id:upper>]
+    pub fn peripheral_id() -> $crate::PeripheralID {
+        $crate::PeripheralID::[<PIO $group_id:upper>]
     }
 
     /// Instantiate a representation of a PIO group, providing an interface

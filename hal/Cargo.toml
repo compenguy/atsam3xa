@@ -26,21 +26,23 @@ atsam3x8e = { version = "", path = "../pac/atsam3x8e", optional = true }
 atsam3x8h = { version = "", path = "../pac/atsam3x8h", optional = true }
 
 [features]
+sam3a = [] # feature for shared traits between sam3a4c, sam3a8c
+sam3x = [] # feature for shared traits between sam3x4c, sam3x8c, sam3x4e, sam3x8e, sam3x8h
 sam3_4 = [] # feature for shared traits between sam3a4c, sam3x4c, sam3x4e
 sam3_8 = [] # feature for shared traits between sam3a8c, sam3x8c, sam3x8e, sam3x8h
 sam3_c = [] # feature for shared traits between sam3a4c, sam3a8c, sam3x4c, sam3x8c
 sam3_e = [] # feature for shared traits between sam3x4e, sam3x8e
-sam3a4c = ["atsam3a4c", "sam3_4", "sam3_c"]
+sam3a4c = ["atsam3a4c", "sam3a", "sam3_4", "sam3_c"]
 sam3a4c-rt = ["atsam3a4c/rt", "sam3a4c"]
-sam3a8c = ["atsam3a8c", "sam3_8", "sam3_c"]
+sam3a8c = ["atsam3a8c", "sam3a", "sam3_8", "sam3_c"]
 sam3a8c-rt = ["atsam3a8c/rt", "sam3a8c"]
-sam3x4c = ["atsam3x4c", "sam3_4", "sam3_c"]
+sam3x4c = ["atsam3x4c", "sam3x", "sam3_4", "sam3_c"]
 sam3x4c-rt = ["atsam3x4c/rt", "sam3x4c"]
-sam3x4e = ["atsam3x4e", "sam3_4", "sam3_e"]
+sam3x4e = ["atsam3x4e", "sam3x", "sam3_4", "sam3_e"]
 sam3x4e-rt = ["atsam3x4e/rt", "sam3x4e"]
-sam3x8c = ["atsam3x8c", "sam3_8", "sam3_c"]
+sam3x8c = ["atsam3x8c", "sam3x", "sam3_8", "sam3_c"]
 sam3x8c-rt = ["atsam3x8c/rt", "sam3x8c"]
-sam3x8e = ["atsam3x8e", "sam3_e", "sam3_e"]
+sam3x8e = ["atsam3x8e", "sam3x", "sam3_8", "sam3_e"]
 sam3x8e-rt = ["atsam3x8e/rt", "sam3x8e"]
-sam3x8h = ["atsam3x8h", "sam3_8"]
+sam3x8h = ["atsam3x8h", "sam3x", "sam3_8"]
 sam3x8h-rt = ["atsam3x8h/rt", "sam3x8h"]

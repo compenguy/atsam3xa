@@ -55,3 +55,8 @@ pub mod gpio;
 pub mod prelude;
 pub mod time;
 pub mod watchdog;
+
+/// Identifier used for enabling/disabling the clock to that peripheral, as
+/// well as for controlling the peripher interrupt in the NVIC. Peripherals
+/// 0-8, and 10 are always clocked.
+pub type PeripheralID = target_device::Interrupt;
