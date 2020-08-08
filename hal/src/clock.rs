@@ -368,7 +368,7 @@ impl SystemClocks {
     /// Enable the UTMI PLL, primarily used for clocking USB.
     pub fn enable_upll(&mut self, config: UPllClockConfig) {
         self.ckgr_uckr
-            .write(|w| unsafe { w.upllen().set_bit().upllcount().bits(config.count) });
+            .modify(|_, w| unsafe { w.upllen().set_bit().upllcount().bits(config.count) });
 
         // Wait until pll is locked
         // 0 = not locked, 1 = locked
@@ -378,7 +378,7 @@ impl SystemClocks {
     /// Disable the UTMI PLL, disabling the USB bus and any clocks configured
     /// to use it as a source.
     pub fn disable_upll(&mut self) {
-        self.ckgr_uckr.write(|w| w.upllen().clear_bit());
+        self.ckgr_uckr.modify(|_, w| w.upllen().clear_bit());
     }
 
     /// Select which clock source the master clock should use, along with some
