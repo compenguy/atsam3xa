@@ -9,9 +9,9 @@ use board::prelude::*;
 use board::hal::clock::SystemClocks;
 use board::hal::comm;
 use board::hal::delay::Delay;
+use board::hal::time::Hertz;
 use board::hal::watchdog::WdtBuilder;
 use board::pac::{CorePeripherals, Peripherals};
-use board::hal::time::Hertz;
 
 use core::fmt::Write;
 
