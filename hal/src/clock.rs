@@ -46,6 +46,7 @@ pub enum SlowClockSource {
 ///
 /// The Main Clock Crystal frequency is determined by the board designer, but
 /// 12MHz is a common value.
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub enum MainClockSource {
     /// Internal, RC oscillator
     FastRc(FastRCFreq),
@@ -84,16 +85,19 @@ pub struct UPllClockConfig {
     pub count: u8,
 }
 
-/// The state objects for the power management peripherals on the SoC, which
-/// are mostly but not entirely concerned with clocks.
-pub struct State {
+/// `SystemClocks` encapsulates the PMC and SUPC clock hardware.
+/// It provides a type safe way to configure the system clocks.
+/// Initializing the `SystemClocks` instance configures the system to run at
+/// 84MHz by configuring Main clock to run at 12MHz, then setting PLLA to run
+/// at 14x the Main clock, and then setting Master Clock to divide PLLA by 2.
+pub struct SystemClocks {
     /// Power Management Controller
     pub pmc: PMC,
     /// Power Supply Controller
     pub supc: SUPC,
 }
 
-impl core::ops::Deref for State {
+impl core::ops::Deref for SystemClocks {
     type Target = PMC;
 
     fn deref(&self) -> &Self::Target {
@@ -101,13 +105,13 @@ impl core::ops::Deref for State {
     }
 }
 
-impl core::ops::DerefMut for State {
+impl core::ops::DerefMut for SystemClocks {
     fn deref_mut(&mut self) -> &mut Self::Target {
         &mut self.pmc
     }
 }
 
-impl State {
+impl SystemClocks {
     /// Slow clock is always enabled, but is sourced from a low-accuracy RC
     /// oscillator.  This enables the more accurate crystal oscillator and
     /// switch to use that as the slow clock source.  Once the crystal
@@ -199,6 +203,19 @@ impl State {
                 self.ckgr_mor
                     .modify(|_, w| w.key().passwd().moscrcen().clear_bit());
             }
+        }
+    }
+
+    /// Return the currently-active main clock source.
+    pub fn get_main_clock_source(&self) -> MainClockSource {
+        match self.ckgr_mor.read().moscsel().bits() {
+            true => MainClockSource::MainXtal,
+            false => {
+                match self.ckgr_mor.read().moscrcf().variant() {
+                    Variant::Val(s) => MainClockSource::FastRc(s),
+                    Variant::Res(_) => unreachable!(),
+                }
+            },
         }
     }
 
@@ -424,54 +441,23 @@ impl State {
     }
 }
 
-/// `SystemClocks` encapsulates the PMC and SUPC clock hardware.
-/// It provides a type safe way to configure the system clocks.
-/// Initializing the `SystemClocks` instance configures the system to run at
-/// 84MHz by configuring Main clock to run at 12MHz, then setting PLLA to run
-/// at 14x the Main clock, and then setting Master Clock to divide PLLA by 2.
-pub struct SystemClocks {
-    /// Encapsulates the board state, holding ownership of the PMC and SUPC
-    /// register blocks.
-    pub state: State,
-}
-
-impl core::ops::Deref for SystemClocks {
-    type Target = PMC;
-
-    fn deref(&self) -> &Self::Target {
-        &self.state.pmc
-    }
-}
-
-impl core::ops::DerefMut for SystemClocks {
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.state.pmc
-    }
-}
-
 impl SystemClocks {
     /// Select the specified slow clock oscillator, and clock the system to run
     /// at that frequency.
     pub fn with_slow_clk(pmc: PMC, supc: SUPC, use_external_crystal: bool) -> Self {
-        let mut clk = Self {
-            state: State { pmc, supc },
-        };
+        let mut clk = Self { pmc, supc };
         if use_external_crystal {
-            clk.state.enable_slow_clock_xtal();
+            clk.enable_slow_clock_xtal();
         }
-        clk.state
-            .set_master_clock_source_and_prescaler(ClockSource::SLOW_CLK, None, false);
+        clk.set_master_clock_source_and_prescaler(ClockSource::SLOW_CLK, None, false);
         clk
     }
 
     /// Set the main clock source, and clock the system to run at that frequency.
     pub fn with_main_clk(pmc: PMC, supc: SUPC, source: MainClockSource) -> Self {
-        let mut clk = Self {
-            state: State { pmc, supc },
-        };
-        clk.state.set_main_clock_source(source);
-        clk.state
-            .set_master_clock_source_and_prescaler(ClockSource::MAIN_CLK, None, false);
+        let mut clk = Self { pmc, supc };
+        clk.set_main_clock_source(source);
+        clk.set_master_clock_source_and_prescaler(ClockSource::MAIN_CLK, None, false);
         clk
     }
 
@@ -481,16 +467,15 @@ impl SystemClocks {
     pub fn with_plla_clk(pmc: PMC, supc: SUPC) -> Self {
         let mut clk = Self::with_main_clk(pmc, supc, MainClockSource::MainXtal);
 
-        clk.state.configure_plla(PllAClockConfig {
+        clk.configure_plla(PllAClockConfig {
             mula: 14 - 1,
             diva: 1,
             count: 0x3f,
         });
-        clk.state
-            .set_master_clock_source_and_prescaler(ClockSource::PLLA_CLK, None, true);
+        clk.set_master_clock_source_and_prescaler(ClockSource::PLLA_CLK, None, true);
 
         #[cfg(feature = "usb")]
-        clk.state.enable_upll();
+        clk.enable_upll();
 
         clk
     }
@@ -505,7 +490,7 @@ impl SystemClocks {
 
     /// Return the frequency that the main clock is operating at
     pub fn get_slow_clock_rate(&self) -> Hertz {
-        match self.state.supc.sr.read().oscsel().variant() {
+        match self.supc.sr.read().oscsel().variant() {
             RC => Hertz(32000),
             CRYST => Hertz(32768),
         }
@@ -513,15 +498,11 @@ impl SystemClocks {
 
     /// Return the frequency that the main clock is operating at
     pub fn get_main_clock_rate(&self) -> Hertz {
-        if self.ckgr_mor.read().moscsel().bits() {
-            MegaHertz(12).into()
-        } else {
-            match self.ckgr_mor.read().moscrcf().variant() {
-                Variant::Val(_4_MHZ) => MegaHertz(4).into(),
-                Variant::Val(_8_MHZ) => MegaHertz(8).into(),
-                Variant::Val(_12_MHZ) => MegaHertz(12).into(),
-                Variant::Res(_) => unreachable!(),
-            }
+        match self.get_main_clock_source() {
+            MainClockSource::FastRc(_4_MHZ) => MegaHertz(4).into(),
+            MainClockSource::FastRc(_8_MHZ) => MegaHertz(8).into(),
+            MainClockSource::FastRc(_12_MHZ) => MegaHertz(12).into(),
+            MainClockSource::MainXtal => MegaHertz(12).into(),
         }
     }
 
