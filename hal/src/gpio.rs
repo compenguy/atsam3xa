@@ -256,7 +256,7 @@ macro_rules! pin {
             /// when it was last clocked.
             pub fn is_high(&self) -> bool {
                 crate::paste! {
-                unsafe {(*$group::ptr()).pdsr.read().[<p $pin_no>]().bits()}
+                unsafe {(*$group::ptr()).pdsr.read().[<p $pin_no>]().bit_is_set()}
                 } // end paste
             }
 

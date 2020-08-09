@@ -183,7 +183,7 @@ impl SystemClocks {
     pub fn get_main_clock_rate_calibrated(&self) -> Hertz {
         // Wait until mainf has been calibrated since the last change of the
         // main clock
-        while !self.ckgr_mcfr.read().mainfrdy().bits() {}
+        while self.ckgr_mcfr.read().mainfrdy().bit_is_clear() {}
 
         // mainf is how many times the main clock ticks during the count of 16
         // slow clock cycles
@@ -290,9 +290,9 @@ impl SystemClocks {
                 .bits(startup_time)
         });
         // Wait until RC startup time runs out
-        while !self.pmc_sr.read().moscrcs().bits() {}
+        while self.pmc_sr.read().moscrcs().bit_is_clear() {}
         // Wait until Xtal startup time runs out
-        while !self.pmc_sr.read().moscxts().bits() {}
+        while self.pmc_sr.read().moscxts().bit_is_clear() {}
 
         match source {
             MainClockSource::FastRc(f) => {
@@ -300,14 +300,14 @@ impl SystemClocks {
                 self.ckgr_mor
                     .modify(|_, w| w.key().passwd().moscrcf().variant(f));
                 // Let RC osc stabilize at new frequency
-                while !self.pmc_sr.read().moscrcs().bits() {}
+                while self.pmc_sr.read().moscrcs().bit_is_clear() {}
 
                 // Switch main clock to RC osc
                 self.ckgr_mor
                     .modify(|_, w| w.key().passwd().moscsel().clear_bit());
                 // Wait until oscillator selection reports ready
                 // 0 = done, 1 = in progress
-                while !self.pmc_sr.read().moscsels().bits() {}
+                while self.pmc_sr.read().moscsels().bit_is_clear() {}
 
                 // Disable unused xtal oscillator
                 self.ckgr_mor
@@ -318,7 +318,7 @@ impl SystemClocks {
                     .modify(|_, w| w.key().passwd().moscsel().set_bit());
                 // Wait until oscillator selection reports ready
                 // 0 = done, 1 = in progress
-                while !self.pmc_sr.read().moscsels().bits() {}
+                while self.pmc_sr.read().moscsels().bit_is_clear() {}
 
                 // Disable unused RC oscillator
                 self.ckgr_mor
@@ -329,7 +329,7 @@ impl SystemClocks {
 
     /// Return the currently-active main clock source.
     pub fn get_main_clock_source(&self) -> MainClockSource {
-        match self.ckgr_mor.read().moscsel().bits() {
+        match self.ckgr_mor.read().moscsel().bit_is_set() {
             true => MainClockSource::MainXtal,
             false => match self.ckgr_mor.read().moscrcf().variant() {
                 Variant::Val(s) => MainClockSource::FastRc(s),
@@ -364,14 +364,14 @@ impl SystemClocks {
 
         // Wait until pll is locked
         // 0 = not locked, 1 = locked
-        while !self.pmc_sr.read().locka().bits() {}
+        while self.pmc_sr.read().locka().bit_is_clear() {}
     }
 
     /// Enable the UTMI PLL, primarily used for clocking USB. The count is how
     /// many slow clock ticks * 8 to wait for UPLL to settle.
     pub fn enable_upll(&mut self, count: u8) {
         // early exit if it's already enabled
-        if self.ckgr_uckr.read().upllen().bits() {
+        if self.ckgr_uckr.read().upllen().bit_is_set() {
             return;
         }
 
@@ -380,7 +380,7 @@ impl SystemClocks {
 
         // Wait until pll is locked
         // 0 = not locked, 1 = locked
-        while !self.pmc_sr.read().locku().bits() {}
+        while self.pmc_sr.read().locku().bit_is_clear() {}
     }
 
     /// Disable the UTMI PLL, disabling the USB bus and any clocks configured
@@ -404,7 +404,7 @@ impl SystemClocks {
 
                 // Wait for the prescaler to latch
                 // 0 = not ready, 1 = ready
-                while !self.pmc_sr.read().mckrdy().bits() {}
+                while self.pmc_sr.read().mckrdy().bit_is_clear() {}
             }
         }
         // For switching to PLL, we have to prime it by first setting main clock
@@ -412,12 +412,12 @@ impl SystemClocks {
         if source == ClockSource::PLLA_CLK {
             self.pmc_mckr
                 .modify(|_, w| w.css().main_clk().plladiv2().bit(pll_div2));
-            while !self.pmc_sr.read().mckrdy().bits() {}
+            while self.pmc_sr.read().mckrdy().bit_is_clear() {}
         }
         if source == ClockSource::UPLL_CLK {
             self.pmc_mckr
                 .modify(|_, w| w.css().main_clk().uplldiv2().bit(pll_div2));
-            while !self.pmc_sr.read().mckrdy().bits() {}
+            while self.pmc_sr.read().mckrdy().bit_is_clear() {}
         }
 
         // Switch to the desired clock
@@ -434,7 +434,7 @@ impl SystemClocks {
 
         // Wait until master clock reports ready
         // 0 = not ready, 1 = ready
-        while !self.pmc_sr.read().mckrdy().bits() {}
+        while self.pmc_sr.read().mckrdy().bit_is_clear() {}
 
         // For slow and main clocks, prescaler should be applied after changing
         // the clock source
@@ -444,7 +444,7 @@ impl SystemClocks {
 
                 // Wait for the prescaler to latch
                 // 0 = not ready, 1 = ready
-                while !self.pmc_sr.read().mckrdy().bits() {}
+                while self.pmc_sr.read().mckrdy().bit_is_clear() {}
             }
         }
     }
