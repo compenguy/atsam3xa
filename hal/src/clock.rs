@@ -564,4 +564,44 @@ impl SystemClocks {
             PeripheralID::CAN1 => self.pmc_pcdr1.write_with_zero(|w| w.pid44().set_bit()),
         }
     }
+
+    /// Configure system clocks to operate USB at full-speed clocks (48MHz)
+    pub fn enable_usb_full_speed_clocks(&mut self) {
+        // TODO: error if main clock is not external crystal
+        if self.get_main_clock_source() != MainClockSource::MainXtal {
+            return;
+        }
+
+        self.enable_upll(0x10u8);
+
+        // Set USB clock source to UPLL, and divider to 10 (divider = usbdiv + 1)
+        self.pmc_usb
+            .modify(|_, w| unsafe { w.usbs().set_bit().usbdiv().bits(9) });
+
+        // enable UOTGHS peripheral clock
+        self.enable_peripheral_clock(PeripheralID::UOTGHS);
+
+        // enable USB OTG 48M clock
+        self.pmc_scer.write_with_zero(|w| w.uotgclk().set_bit());
+    }
+
+    /// Configure system clocks to operate USB at high-speed clocks (480MHz)
+    pub fn enable_usb_high_speed_clocks(&mut self) {
+        // TODO: error if main clock is not external crystal
+        if self.get_main_clock_source() != MainClockSource::MainXtal {
+            return;
+        }
+
+        self.enable_upll(0x10u8);
+
+        // Set USB clock source to UPLL, and divider to 1 (divider = usbdiv + 1)
+        self.pmc_usb
+            .modify(|_, w| unsafe { w.usbs().set_bit().usbdiv().bits(0) });
+
+        // enable UOTGHS peripheral clock
+        self.enable_peripheral_clock(PeripheralID::UOTGHS);
+
+        // disable USB OTG 48M clock
+        self.pmc_scdr.write_with_zero(|w| w.uotgclk().set_bit());
+    }
 }

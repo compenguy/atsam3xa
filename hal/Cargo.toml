@@ -12,11 +12,6 @@ readme = "README.md"
 
 [dependencies]
 cortex-m = "~0.6"
-# embedded-hal API breakage is happening within the 1.0.0-alpha versions
-# latest git has what we want
-embedded-hal = { git = "https://github.com/rust-embedded/embedded-hal.git" }
-nb = "~0.1"
-paste = "~1.0"
 atsam3a4c = { version = "", path = "../pac/atsam3a4c", optional = true }
 atsam3a8c = { version = "", path = "../pac/atsam3a8c", optional = true }
 atsam3x4c = { version = "", path = "../pac/atsam3x4c", optional = true }
@@ -24,6 +19,12 @@ atsam3x4e = { version = "", path = "../pac/atsam3x4e", optional = true }
 atsam3x8c = { version = "", path = "../pac/atsam3x8c", optional = true }
 atsam3x8e = { version = "", path = "../pac/atsam3x8e", optional = true }
 atsam3x8h = { version = "", path = "../pac/atsam3x8h", optional = true }
+embedded-hal = { git = "https://github.com/rust-embedded/embedded-hal.git" }
+nb = "~0.1"
+paste = "~1.0"
+usb-host = {version = "~0.1", optional = true}
+usb-device = {version = "~0.2", optional = true}
+starb  = {version = "~0.3", optional = true}
 
 [features]
 sam3a = [] # feature for shared traits between sam3a4c, sam3a8c
@@ -46,3 +47,4 @@ sam3x8e = ["atsam3x8e", "sam3x", "sam3_8", "sam3_e"]
 sam3x8e-rt = ["atsam3x8e/rt", "sam3x8e"]
 sam3x8h = ["atsam3x8h", "sam3x", "sam3_8"]
 sam3x8h-rt = ["atsam3x8h/rt", "sam3x8h"]
+usb = ["usb-host", "usb-device", "starb"]

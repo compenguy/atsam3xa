@@ -54,6 +54,8 @@ pub mod flash;
 pub mod gpio;
 pub mod prelude;
 pub mod time;
+#[cfg(feature = "usb")]
+pub mod uotghs;
 pub mod watchdog;
 
 /// Identifier used for enabling/disabling the clock to that peripheral, as
