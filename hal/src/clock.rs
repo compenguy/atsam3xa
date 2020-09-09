@@ -179,16 +179,19 @@ pub enum PeripheralID {
     Id44Can1,
 }
 
-/// The state objects for the power management peripherals on the SoC, which
-/// are mostly but not entirely concerned with clocks.
-pub struct State {
+/// `SystemClocks` encapsulates the PMC and SUPC clock hardware.
+/// It provides a type safe way to configure the system clocks.
+/// Initializing the `SystemClocks` instance configures the system to run at
+/// 84MHz by configuring Main clock to run at 12MHz, then setting PLLA to run
+/// at 14x the Main clock, and then setting Master Clock to divide PLLA by 2.
+pub struct SystemClocks {
     /// Power Management Controller
     pub pmc: PMC,
     /// Power Supply Controller
     pub supc: SUPC,
 }
 
-impl core::ops::Deref for State {
+impl core::ops::Deref for SystemClocks {
     type Target = PMC;
 
     fn deref(&self) -> &Self::Target {
@@ -196,13 +199,142 @@ impl core::ops::Deref for State {
     }
 }
 
-impl core::ops::DerefMut for State {
+impl core::ops::DerefMut for SystemClocks {
     fn deref_mut(&mut self) -> &mut Self::Target {
         &mut self.pmc
     }
 }
 
-impl State {
+impl SystemClocks {
+    /// Select the specified slow clock oscillator, and clock the system to run
+    /// at that frequency.
+    pub fn with_slow_clk(pmc: PMC, supc: SUPC, use_external_crystal: bool) -> Self {
+        let mut clk = Self {
+            pmc,
+            supc,
+        };
+        if use_external_crystal {
+            clk.enable_slow_clock_xtal();
+        }
+        clk.set_master_clock_source_and_prescaler(ClockSource::SLOW_CLK, None, false);
+        clk
+    }
+
+    /// Set the main clock source, and clock the system to run at that frequency.
+    pub fn with_main_clk(pmc: PMC, supc: SUPC, source: MainClockSource) -> Self {
+        let mut clk = Self {
+            pmc,
+            supc,
+        };
+        clk.set_main_clock_source(source);
+        clk.set_master_clock_source_and_prescaler(ClockSource::MAIN_CLK, None, false);
+        clk
+    }
+
+    /// Configure the main clock to run off the main oscillator crystal, then
+    /// configure PLLA to run at 14x that, set the system to run at half the
+    /// frequency of PLLA, and if the usb feature is enabled, enable UPLL as well.
+    pub fn with_plla_clk(pmc: PMC, supc: SUPC) -> Self {
+        let mut clk = Self::with_main_clk(pmc, supc, MainClockSource::MainXtal);
+
+        clk.configure_plla(PllAClockConfig {
+            mula: 14 - 1,
+            diva: 1,
+            count: 0x3f,
+        });
+        clk.set_master_clock_source_and_prescaler(ClockSource::PLLA_CLK, None, true);
+
+        #[cfg(feature = "usb")]
+        clk.enable_upll();
+
+        clk
+    }
+
+    /// Set the main clock source, and clock the system to run at that frequency.
+    /// TODO: Either we have a bug in how we configure PLLA, or we have a bug in
+    /// how to derive SysTick intervals based on PLLA configuration, either way
+    /// until that's fixed, we'll default to using main clk.
+    pub fn new(pmc: PMC, supc: SUPC) -> Self {
+        Self::with_main_clk(pmc, supc, MainClockSource::MainXtal)
+    }
+
+    /// Return the frequency that the main clock is operating at
+    pub fn get_slow_clock_rate(&self) -> Hertz {
+        match self.supc.sr.read().oscsel().variant() {
+            RC => Hertz(32000),
+            CRYST => Hertz(32768),
+        }
+    }
+
+    /// Return the frequency that the main clock is operating at
+    pub fn get_main_clock_rate(&self) -> Hertz {
+        if self.ckgr_mor.read().moscsel().bits() {
+            MegaHertz(12).into()
+        } else {
+            match self.ckgr_mor.read().moscrcf().variant() {
+                Variant::Val(_4_MHZ) => MegaHertz(4).into(),
+                Variant::Val(_8_MHZ) => MegaHertz(8).into(),
+                Variant::Val(_12_MHZ) => MegaHertz(12).into(),
+                Variant::Res(_) => unreachable!(),
+            }
+        }
+    }
+
+    /// Return the frequency that the main clock is operating at, based
+    /// on the slow clock rate.
+    pub fn get_main_clock_rate_calibrated(&self) -> Hertz {
+        // Wait until mainf has been calibrated since the last change of the
+        // main clock
+        while !self.ckgr_mcfr.read().mainfrdy().bits() {}
+
+        // mainf is how many times the main clock ticks during the count of 16
+        // slow clock cycles
+        let mainf = self.ckgr_mcfr.read().mainf().bits() as u32;
+        let mainf_freq = (mainf * self.get_slow_clock_rate().0) / 16;
+        Hertz(mainf_freq)
+    }
+
+    /// Return the frequency that the plla clock is operating at
+    pub fn get_plla_clock_rate(&self) -> Hertz {
+        // plla clock = mainck * (mula + 1)/diva
+        let mut tmp_clk = self.get_main_clock_rate();
+        tmp_clk.0 *= (self.ckgr_pllar.read().mula().bits() + 1) as u32;
+        tmp_clk.0 /= self.ckgr_pllar.read().diva().bits() as u32;
+        tmp_clk
+    }
+
+    /// Return the frequency that the upll clock is operating at
+    pub fn get_upll_clock_rate(&self) -> Hertz {
+        // upll clock = mainck * 40
+        // but it's only valid if mainck == 12MHz
+        let mut tmp_clk = self.get_main_clock_rate();
+        tmp_clk.0 *= 40;
+        tmp_clk
+    }
+
+    /// Return the frequency that the master clock is operating at
+    pub fn get_syscore(&mut self) -> Hertz {
+        /* Determine clock frequency according to clock register values */
+        let mut clk_unscaled: Hertz = match self.pmc_mckr.read().css().variant() {
+            SLOW_CLK => self.get_slow_clock_rate(),
+            MAIN_CLK => self.get_main_clock_rate(),
+            PLLA_CLK => self.get_plla_clock_rate(),
+            UPLL_CLK => self.get_upll_clock_rate(),
+        };
+        // Apply pll-specific divider if set
+        if self.pmc_mckr.read().css().variant() == PLLA_CLK {
+            clk_unscaled.0 /= 1 << (self.pmc_mckr.read().plladiv2().bits() as u8);
+        }
+        if self.pmc_mckr.read().css().variant() == PLLA_CLK {
+            clk_unscaled.0 /= 1 << (self.pmc_mckr.read().uplldiv2().bits() as u8);
+        }
+        // Apply prescaler
+        match self.pmc_mckr.read().pres().variant() {
+            CLK_3 => Hertz(clk_unscaled.0 / 3),
+            x => Hertz(clk_unscaled.0 >> (x as u8)),
+        }
+    }
+
     /// Slow clock is always enabled, but is sourced from a low-accuracy RC
     /// oscillator.  This enables the more accurate crystal oscillator and
     /// switch to use that as the slow clock source.  Once the crystal
@@ -506,163 +638,6 @@ impl State {
             PeripheralID::Id42Emac => self.pmc_pcdr1.write_with_zero(|w| w.pid42().set_bit()),
             PeripheralID::Id43Can0 => self.pmc_pcdr1.write_with_zero(|w| w.pid43().set_bit()),
             PeripheralID::Id44Can1 => self.pmc_pcdr1.write_with_zero(|w| w.pid44().set_bit()),
-        }
-    }
-}
-
-/// `SystemClocks` encapsulates the PMC and SUPC clock hardware.
-/// It provides a type safe way to configure the system clocks.
-/// Initializing the `SystemClocks` instance configures the system to run at
-/// 84MHz by configuring Main clock to run at 12MHz, then setting PLLA to run
-/// at 14x the Main clock, and then setting Master Clock to divide PLLA by 2.
-pub struct SystemClocks {
-    /// Encapsulates the board state, holding ownership of the PMC and SUPC
-    /// register blocks.
-    pub state: State,
-}
-
-impl core::ops::Deref for SystemClocks {
-    type Target = PMC;
-
-    fn deref(&self) -> &Self::Target {
-        &self.state.pmc
-    }
-}
-
-impl core::ops::DerefMut for SystemClocks {
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        &mut self.state.pmc
-    }
-}
-
-impl SystemClocks {
-    /// Select the specified slow clock oscillator, and clock the system to run
-    /// at that frequency.
-    pub fn with_slow_clk(pmc: PMC, supc: SUPC, use_external_crystal: bool) -> Self {
-        let mut clk = Self {
-            state: State { pmc, supc },
-        };
-        if use_external_crystal {
-            clk.state.enable_slow_clock_xtal();
-        }
-        clk.state
-            .set_master_clock_source_and_prescaler(ClockSource::SLOW_CLK, None, false);
-        clk
-    }
-
-    /// Set the main clock source, and clock the system to run at that frequency.
-    pub fn with_main_clk(pmc: PMC, supc: SUPC, source: MainClockSource) -> Self {
-        let mut clk = Self {
-            state: State { pmc, supc },
-        };
-        clk.state.set_main_clock_source(source);
-        clk.state
-            .set_master_clock_source_and_prescaler(ClockSource::MAIN_CLK, None, false);
-        clk
-    }
-
-    /// Configure the main clock to run off the main oscillator crystal, then
-    /// configure PLLA to run at 14x that, set the system to run at half the
-    /// frequency of PLLA, and if the usb feature is enabled, enable UPLL as well.
-    pub fn with_plla_clk(pmc: PMC, supc: SUPC) -> Self {
-        let mut clk = Self::with_main_clk(pmc, supc, MainClockSource::MainXtal);
-
-        clk.state.configure_plla(PllAClockConfig {
-            mula: 14 - 1,
-            diva: 1,
-            count: 0x3f,
-        });
-        clk.state
-            .set_master_clock_source_and_prescaler(ClockSource::PLLA_CLK, None, true);
-
-        #[cfg(feature = "usb")]
-        clk.state.enable_upll();
-
-        clk
-    }
-
-    /// Set the main clock source, and clock the system to run at that frequency.
-    /// TODO: Either we have a bug in how we configure PLLA, or we have a bug in
-    /// how to derive SysTick intervals based on PLLA configuration, either way
-    /// until that's fixed, we'll default to using main clk.
-    pub fn new(pmc: PMC, supc: SUPC) -> Self {
-        Self::with_main_clk(pmc, supc, MainClockSource::MainXtal)
-    }
-
-    /// Return the frequency that the main clock is operating at
-    pub fn get_slow_clock_rate(&self) -> Hertz {
-        match self.state.supc.sr.read().oscsel().variant() {
-            RC => Hertz(32000),
-            CRYST => Hertz(32768),
-        }
-    }
-
-    /// Return the frequency that the main clock is operating at
-    pub fn get_main_clock_rate(&self) -> Hertz {
-        if self.ckgr_mor.read().moscsel().bits() {
-            MegaHertz(12).into()
-        } else {
-            match self.ckgr_mor.read().moscrcf().variant() {
-                Variant::Val(_4_MHZ) => MegaHertz(4).into(),
-                Variant::Val(_8_MHZ) => MegaHertz(8).into(),
-                Variant::Val(_12_MHZ) => MegaHertz(12).into(),
-                Variant::Res(_) => unreachable!(),
-            }
-        }
-    }
-
-    /// Return the frequency that the main clock is operating at, based
-    /// on the slow clock rate.
-    pub fn get_main_clock_rate_calibrated(&self) -> Hertz {
-        // Wait until mainf has been calibrated since the last change of the
-        // main clock
-        while !self.ckgr_mcfr.read().mainfrdy().bits() {}
-
-        // mainf is how many times the main clock ticks during the count of 16
-        // slow clock cycles
-        let mainf = self.ckgr_mcfr.read().mainf().bits() as u32;
-        let mainf_freq = (mainf * self.get_slow_clock_rate().0) / 16;
-        Hertz(mainf_freq)
-    }
-
-    /// Return the frequency that the plla clock is operating at
-    pub fn get_plla_clock_rate(&self) -> Hertz {
-        // plla clock = mainck * (mula + 1)/diva
-        let mut tmp_clk = self.get_main_clock_rate();
-        tmp_clk.0 *= (self.ckgr_pllar.read().mula().bits() + 1) as u32;
-        tmp_clk.0 /= self.ckgr_pllar.read().diva().bits() as u32;
-        tmp_clk
-    }
-
-    /// Return the frequency that the upll clock is operating at
-    pub fn get_upll_clock_rate(&self) -> Hertz {
-        // upll clock = mainck * 40
-        // but it's only valid if mainck == 12MHz
-        let mut tmp_clk = self.get_main_clock_rate();
-        tmp_clk.0 *= 40;
-        tmp_clk
-    }
-
-    /// Return the frequency that the master clock is operating at
-    pub fn get_syscore(&mut self) -> Hertz {
-        /* Determine clock frequency according to clock register values */
-        let mut clk_unscaled: Hertz = match self.pmc_mckr.read().css().variant() {
-            SLOW_CLK => self.get_slow_clock_rate(),
-            MAIN_CLK => self.get_main_clock_rate(),
-            PLLA_CLK => self.get_plla_clock_rate(),
-            UPLL_CLK => self.get_upll_clock_rate(),
-        };
-        // Apply pll-specific divider if set
-        if self.pmc_mckr.read().css().variant() == PLLA_CLK {
-            clk_unscaled.0 /= 1 << (self.pmc_mckr.read().plladiv2().bits() as u8);
-        }
-        if self.pmc_mckr.read().css().variant() == PLLA_CLK {
-            clk_unscaled.0 /= 1 << (self.pmc_mckr.read().uplldiv2().bits() as u8);
-        }
-        // Apply prescaler
-        match self.pmc_mckr.read().pres().variant() {
-            CLK_3 => Hertz(clk_unscaled.0 / 3),
-            x => Hertz(clk_unscaled.0 >> (x as u8)),
         }
     }
 }
