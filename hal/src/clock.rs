@@ -83,6 +83,12 @@ pub struct UPllClockConfig {
     pub count: u8,
 }
 
+impl From<u8> for UPllClockConfig {
+    fn from(count: u8) -> Self {
+        Self { count }
+    }
+}
+
 /// Identifier used for enabling/disabling the clock to that peripheral, as
 /// well as for controlling the peripher interrupt in the NVIC. Peripherals
 /// 0-8, and 10 are always clocked.
@@ -245,7 +251,7 @@ impl SystemClocks {
         clk.set_master_clock_source_and_prescaler(ClockSource::PLLA_CLK, None, true);
 
         #[cfg(feature = "usb")]
-        clk.enable_upll();
+        clk.enable_upll(3);
 
         clk
     }
